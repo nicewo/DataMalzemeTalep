@@ -527,11 +527,14 @@
                                         Foreground="{StaticResource TextSecondary}"
                                         Text="SON OLUŞTURULAN" />
                                     <TextBlock
+                                        x:Name="LastCreatedNameText"
                                         Margin="0,12,0,5"
-                                        FontSize="27"
+                                        FontSize="18"
                                         FontWeight="SemiBold"
-                                        Text="—" />
+                                        Text="—"
+                                        TextTrimming="CharacterEllipsis" />
                                     <TextBlock
+                                        x:Name="LastCreatedDateText"
                                         FontSize="11"
                                         Foreground="#7F91AA"
                                         Text="Henüz liste kaydı yok"
