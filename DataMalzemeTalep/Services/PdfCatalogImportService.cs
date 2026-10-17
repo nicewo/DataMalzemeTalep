@@ -150,10 +150,8 @@ public sealed class PdfCatalogImportService
         return text.Contains("DATA OTOMASYON") ||
                text.Contains("VERGI DAIRESI") ||
                text.Contains("VERGI NO") ||
-               text.Contains("MAI L") ||
-               text.Contains("ADRES") ||
-               text.Contains("BAKIR BARALAR") ||
-               text.Contains("TARAFINDAN BELIRLENECEK");
+               text.Contains("MAIL") ||
+               text.Contains("ADRES");
     }
 
     private static string NormalizeUnit(string unit)
