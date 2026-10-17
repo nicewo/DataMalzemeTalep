@@ -44,8 +44,10 @@ public partial class MainWindow : Window
 
     private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        var compact = ActualWidth < 1080;
-        var narrow = ActualWidth < 900;
+        // Breakpoints use the whole window width; keep two-column cards until the
+        // actual content area becomes genuinely narrow.
+        var compact = ActualWidth < 1050;
+        var narrow = ActualWidth < 680;
 
         DashboardArtColumn.Width = compact ? new GridLength(0) : new GridLength(150);
         DashboardHeroArt.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
@@ -55,10 +57,10 @@ public partial class MainWindow : Window
         {
             QuickActionsColumn.Width = new GridLength(1, GridUnitType.Star);
             GettingStartedColumn.Width = new GridLength(1, GridUnitType.Star);
-            QuickActionsCard.SetValue(Grid.RowProperty, 0);
-            QuickActionsCard.SetValue(Grid.ColumnProperty, 0);
-            GettingStartedCard.SetValue(Grid.RowProperty, 1);
-            GettingStartedCard.SetValue(Grid.ColumnProperty, 0);
+            Grid.SetRow(QuickActionsCard, 0);
+            Grid.SetColumn(QuickActionsCard, 0);
+            Grid.SetRow(GettingStartedCard, 1);
+            Grid.SetColumn(GettingStartedCard, 0);
             QuickActionsCard.Margin = new Thickness(0, 0, 0, 12);
             GettingStartedCard.Margin = new Thickness(0);
             QuickActionsRow.Height = GridLength.Auto;
@@ -68,15 +70,20 @@ public partial class MainWindow : Window
         {
             QuickActionsColumn.Width = new GridLength(1.25, GridUnitType.Star);
             GettingStartedColumn.Width = new GridLength(1, GridUnitType.Star);
-            QuickActionsCard.SetValue(Grid.RowProperty, 0);
-            QuickActionsCard.SetValue(Grid.ColumnProperty, 0);
-            GettingStartedCard.SetValue(Grid.RowProperty, 0);
-            GettingStartedCard.SetValue(Grid.ColumnProperty, 1);
+            Grid.SetRow(QuickActionsCard, 0);
+            Grid.SetColumn(QuickActionsCard, 0);
+            Grid.SetRow(GettingStartedCard, 0);
+            Grid.SetColumn(GettingStartedCard, 1);
             QuickActionsCard.Margin = new Thickness(0, 0, 12, 0);
             GettingStartedCard.Margin = new Thickness(12, 0, 0, 0);
             QuickActionsRow.Height = new GridLength(1, GridUnitType.Star);
             GettingStartedRow.Height = new GridLength(1, GridUnitType.Star);
         }
+
+        // Responsive reflow changes the content height; avoid preserving an old
+        // vertical offset that leaves the hero card clipped after resizing.
+        if (DashboardPanel.Visibility == Visibility.Visible)
+            MainContentScrollViewer.ScrollToTop();
     }
 
     private void MinimizeWindow_Click(object sender, RoutedEventArgs e)
