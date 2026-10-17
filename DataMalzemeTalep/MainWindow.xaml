@@ -1065,7 +1065,7 @@
                                         Margin="0,0,8,0"
                                         Padding="14,8"
                                         Click="DeleteCatalogItem_Click"
-                                        Content="Seçili Ürünü Sil"
+                                        Content="Seçilileri Sil"
                                         Style="{StaticResource SecondaryButtonStyle}" />
                                     <Button
                                         Padding="14,8"
@@ -1085,7 +1085,7 @@
                                     IsReadOnly="False"
                                     PreviewMouseWheel="CatalogGrid_PreviewMouseWheel"
                                     RowBackground="#111C30"
-                                    SelectionMode="Single"
+                                    SelectionMode="Extended"
                                     SelectionUnit="FullRow">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn
