@@ -359,6 +359,85 @@ public partial class MainWindow : Window
         }
     }
 
+    private void AddCatalogItem_Click(object sender, RoutedEventArgs e)
+    {
+        var material = new Material
+        {
+            Category = "",
+            Brand = "",
+            Model = "",
+            Specifications = "",
+            Description = "",
+            Unit = "Adet"
+        };
+        _materials.Add(material);
+        CatalogGrid.ItemsSource = null;
+        CatalogGrid.ItemsSource = _materials;
+        CatalogGrid.SelectedItem = material;
+        CatalogGrid.ScrollIntoView(material);
+        CatalogGrid.BeginEdit();
+        CatalogCountText.Text = _materials.Count.ToString();
+    }
+
+    private void DeleteCatalogItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (CatalogGrid.SelectedItem is not Material material)
+        {
+            MessageBox.Show("Önce silinecek ürünü seçin.", "Ürün seçilmedi");
+            return;
+        }
+
+        if (MessageBox.Show($"'{material.Brand} {material.Model}' katalogdan silinsin mi?",
+            "Ürünü Sil", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            return;
+
+        _materials.Remove(material);
+        CatalogGrid.ItemsSource = null;
+        CatalogGrid.ItemsSource = _materials;
+        CatalogCountText.Text = _materials.Count.ToString();
+        RefreshCatalogSelectors();
+        try { _service.SaveCatalog(_materials); }
+        catch (Exception ex) { MessageBox.Show(ex.Message, "Katalog kaydedilemedi"); }
+    }
+
+    private void SaveCatalog_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            CatalogGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+            CatalogGrid.CommitEdit(DataGridEditingUnit.Row, true);
+
+            foreach (var material in _materials)
+            {
+                material.Category = material.Category?.Trim() ?? "";
+                material.Brand = material.Brand?.Trim() ?? "";
+                material.Model = material.Model?.Trim() ?? "";
+                material.Specifications = material.Specifications?.Trim() ?? "";
+                material.Description = material.Description?.Trim() ?? "";
+                material.Unit = string.IsNullOrWhiteSpace(material.Unit) ? "Adet" : material.Unit.Trim();
+            }
+
+            _service.SaveCatalog(_materials);
+            CatalogCountText.Text = _materials.Count.ToString();
+            RefreshCatalogSelectors();
+            MessageBox.Show("Katalog kaydedildi.", "Malzeme Kataloğu", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Katalog kaydedilemedi");
+        }
+    }
+
+    private void RefreshCatalogSelectors()
+    {
+        CategoryCombo.ItemsSource = _materials.Select(m => m.Category)
+            .Where(v => !string.IsNullOrWhiteSpace(v))
+            .Distinct().OrderBy(v => v).ToList();
+        BrandCombo.ItemsSource = null;
+        ProductCombo.ItemsSource = null;
+        ProductDescriptionText.Text = "Marka ve model seçin.";
+    }
+
     private void ExportPdf_Click(object sender, RoutedEventArgs e)
     {
         MessageBox.Show("PDF çıktısı henüz uygulanmadı.", "PDF Çıkar");
