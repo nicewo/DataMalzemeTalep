@@ -50,6 +50,12 @@ public sealed class PdfCatalogImportService
                 foreach (var word in line.Words)
                 {
                     var x = (word.BoundingBox.Left + word.BoundingBox.Right) / 2;
+
+                    // Ignore the leftmost "SIRA NO" column; otherwise its row number
+                    // can be mistaken for part of the brand.
+                    if (x < columns[0] - (columns[1] - columns[0]) / 2)
+                        continue;
+
                     var nearest = Enumerable.Range(0, columns.Length)
                         .MinBy(index => Math.Abs(columns[index] - x));
                     fields[nearest] = Join(fields[nearest], word.Text);
