@@ -18,17 +18,17 @@
             <DockPanel Margin="18,22,18,18">
                 <StackPanel DockPanel.Dock="Top">
                     <StackPanel Orientation="Horizontal" Margin="5,4,0,34">
-                        <Border Width="40" Height="40" CornerRadius="12" Background="#6366F1" VerticalAlignment="Center">
-                            <TextBlock Text="DM" FontSize="15" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Width="40" Height="40" CornerRadius="12" Background="#111111" BorderBrush="#D9A514" BorderThickness="1" VerticalAlignment="Center">
+                            <TextBlock Text="D" FontSize="22" FontWeight="Bold" Foreground="#D9A514" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <StackPanel Margin="11,1,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="DATA" FontSize="12" FontWeight="Bold" Foreground="#818CF8"/>
+                            <TextBlock Text="DATA OTOMASYON" FontSize="11" FontWeight="Bold" Foreground="#D9A514"/>
                             <TextBlock Text="Malzeme Talep" FontSize="16" FontWeight="SemiBold" Foreground="#F8FAFC" Margin="0,2,0,0"/>
                         </StackPanel>
                     </StackPanel>
 
                     <TextBlock Text="ÇALIŞMA ALANI" FontSize="10" FontWeight="Bold" Foreground="#61718A" Margin="12,0,0,10"/>
-                    <Button x:Name="DashboardNav" Style="{StaticResource NavButtonStyle}" Click="DashboardNav_Click" Background="#202B49" Foreground="#C7D2FE">
+                    <Button x:Name="DashboardNav" Style="{StaticResource NavButtonStyle}" Click="DashboardNav_Click" Background="#3B3017" Foreground="#F2C14E">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="▦" Width="28" FontSize="17" VerticalAlignment="Center"/>
                             <TextBlock Text="Genel Bakış" VerticalAlignment="Center" FontWeight="SemiBold"/>
@@ -112,8 +112,8 @@
                                     <ColumnDefinition Width="180"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel VerticalAlignment="Center" MaxWidth="650">
-                                    <Border Background="#343B70" CornerRadius="5" Padding="9,5" HorizontalAlignment="Left" Margin="0,0,0,14">
-                                        <TextBlock Text="MALZEME YÖNETİMİ" FontSize="10" FontWeight="Bold" Foreground="#C7D2FE"/>
+                                    <Border Background="#4A3A13" CornerRadius="5" Padding="9,5" HorizontalAlignment="Left" Margin="0,0,0,14">
+                                        <TextBlock Text="MALZEME YÖNETİMİ" FontSize="10" FontWeight="Bold" Foreground="#F2C14E"/>
                                     </Border>
                                     <TextBlock Text="Taleplerinizi kolayca yönetin." FontSize="28" FontWeight="Bold" Foreground="#F8FAFC" TextWrapping="Wrap"/>
                                     <TextBlock Text="Yeni bir malzeme listesi oluşturun, kayıtlı taleplerinize ulaşın ve çıktılarınızı hazırlayın." FontSize="13" Foreground="#B5C3DA" TextWrapping="Wrap" Margin="0,10,0,22" LineHeight="21"/>
@@ -125,10 +125,10 @@
                                     </Button>
                                 </StackPanel>
                                 <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="150">
-                                    <Ellipse Width="144" Height="144" Stroke="#46538A" StrokeThickness="1" Opacity="0.8"/>
-                                    <Ellipse Width="108" Height="108" Stroke="#6473B9" StrokeThickness="1" Opacity="0.8"/>
-                                    <Ellipse Width="72" Height="72" Fill="#343F79"/>
-                                    <TextBlock Text="DM" FontSize="26" FontWeight="Bold" Foreground="#E0E7FF" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Ellipse Width="144" Height="144" Stroke="#6D571B" StrokeThickness="1" Opacity="0.8"/>
+                                    <Ellipse Width="108" Height="108" Stroke="#D9A514" StrokeThickness="1" Opacity="0.8"/>
+                                    <Ellipse Width="72" Height="72" Fill="#161616"/>
+                                    <TextBlock Text="D" FontSize="26" FontWeight="Bold" Foreground="#D9A514" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     <Ellipse Width="11" Height="11" Fill="#A5B4FC" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,14,15,0"/>
                                     <Ellipse Width="7" Height="7" Fill="#34D399" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="18,0,0,18"/>
                                 </Grid>
@@ -170,7 +170,7 @@
                                     <TextBlock Text="Sık kullanılan işlemlere buradan ulaşın." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,5,0,18"/>
                                     <Button Style="{StaticResource SecondaryButtonStyle}" HorizontalContentAlignment="Left" Click="NewRequestNav_Click" Margin="0,0,0,10">
                                         <StackPanel Orientation="Horizontal">
-                                            <Border Background="#303B6B" CornerRadius="7" Width="34" Height="34" Margin="0,0,12,0">
+                                            <Border Background="#3D3217" CornerRadius="7" Width="34" Height="34" Margin="0,0,12,0">
                                                 <TextBlock Text="＋" FontSize="20" Foreground="#C7D2FE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                             </Border>
                                             <StackPanel VerticalAlignment="Center">
