@@ -67,6 +67,8 @@ public sealed class DataService
         new XmlSerializer(typeof(MaterialCatalog)).Serialize(stream, catalog);
     }
 
+    public void SaveCatalog(List<Material> materials) => WriteCatalog(CatalogPath, new MaterialCatalog { Materials = materials });
+
     public List<string> GetSavedRequestFiles() =>
         Directory.GetFiles(RequestsPath, "*.xlsx").OrderByDescending(File.GetLastWriteTime).ToList();
 
