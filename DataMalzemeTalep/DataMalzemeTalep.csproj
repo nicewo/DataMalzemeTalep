@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
-    <PackageReference Include="UglyToad.PdfPig" Version="0.1.9" />
+    <PackageReference Include="PdfPig" Version="0.1.16" />
   </ItemGroup>
   <ItemGroup><Content Include="Altın-Devreli-Veri-Otomasyonu-İkonu.ico" /><Content Include="Data\catalog.xml" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup>
