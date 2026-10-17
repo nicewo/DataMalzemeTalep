@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,26 +6,342 @@ using System.Windows.Input;
 using System.Windows.Media;
 using DataMalzemeTalep.Models;
 using DataMalzemeTalep.Services;
-namespace DataMalzemeTalep
+
+namespace DataMalzemeTalep;
+
+public partial class MainWindow : Window
 {
- public partial class MainWindow : Window
- {
-  private readonly DataService _service=new();
-  private readonly ObservableCollection<RequestItem> _items=[];
-  private List<Material> _materials=[];
-  public MainWindow(){InitializeComponent();RequestGrid.ItemsSource=_items;try{_materials=_service.LoadCatalog();CatalogGrid.ItemsSource=_materials;CatalogCountText.Text=_materials.Count.ToString();CategoryCombo.ItemsSource=_materials.Select(m=>m.Category).Distinct().OrderBy(v=>v).ToList();RefreshRequests();}catch(Exception ex){MessageBox.Show(ex.Message,"Katalog hatası");}ShowPage("dashboard");UpdateCount();}
-  private void ShowPage(string p){DashboardPanel.Visibility=p=="dashboard"?Visibility.Visible:Visibility.Collapsed;NewRequestPanel.Visibility=p=="new"?Visibility.Visible:Visibility.Collapsed;PreviousPanel.Visibility=p=="previous"?Visibility.Visible:Visibility.Collapsed;CatalogPanel.Visibility=p=="catalog"?Visibility.Visible:Visibility.Collapsed;SetNav(DashboardNav,p=="dashboard");SetNav(NewRequestNav,p=="new");SetNav(PreviousNav,p=="previous");SetNav(CatalogNav,p=="catalog");PageTitle.Text=p switch{"new"=>"Yeni Talep","previous"=>"Önceki Talepler","catalog"=>"Malzeme Kataloğu",_=>"Genel Bakış"};PageSubtitle.Text=p switch{"new"=>"Katalogdan ürün seçin ve talep listenizi oluşturun.","previous"=>"Kaydedilmiş Excel taleplerinizi açın.","catalog"=>$"XML kataloğunda {_materials.Count} malzeme tanımlı.",_=>"Malzeme taleplerinizi tek yerden yönetin."};if(p=="previous")RefreshRequests();}
-  private static void SetNav(Button b,bool a){b.Background=a?new SolidColorBrush(Color.FromRgb(32,43,73)):Brushes.Transparent;b.Foreground=a?new SolidColorBrush(Color.FromRgb(199,210,254)):new SolidColorBrush(Color.FromRgb(169,184,204));}
-  private void DashboardNav_Click(object s,RoutedEventArgs e)=>ShowPage("dashboard");private void NewRequestNav_Click(object s,RoutedEventArgs e)=>ShowPage("new");private void PreviousNav_Click(object s,RoutedEventArgs e)=>ShowPage("previous");private void CatalogNav_Click(object s,RoutedEventArgs e)=>ShowPage("catalog");
-  private void CategoryCombo_SelectionChanged(object s,SelectionChangedEventArgs e){if(ProductCombo is null||CategoryCombo.SelectedItem is not string cat)return;ProductCombo.ItemsSource=_materials.Where(m=>m.Category==cat).OrderBy(m=>m.Brand).ThenBy(m=>m.Model).ToList();ProductCombo.SelectedIndex=-1;}
-  private void ProductCombo_SelectionChanged(object s,SelectionChangedEventArgs e){if(ProductCombo.SelectedItem is Material m)ProductDescriptionText.Text=$"{m.Specifications} • {m.Description}";}
-  private void AddItem_Click(object s,RoutedEventArgs e){if(ProductCombo.SelectedItem is not Material m){MessageBox.Show("Önce bir malzeme seçin.");return;}if(!decimal.TryParse(QuantityTextBox.Text,out var q)||q<=0){MessageBox.Show("Miktar sıfırdan büyük bir sayı olmalı.");return;}var old=_items.FirstOrDefault(i=>i.Category==m.Category&&i.Brand==m.Brand&&i.Model==m.Model);if(old!=null)old.Quantity+=q;else _items.Add(new(){Category=m.Category,Brand=m.Brand,Model=m.Model,Specifications=m.Specifications,Unit=m.Unit,Quantity=q});RequestGrid.Items.Refresh();QuantityTextBox.Text="1";StatusText.Text="Liste değişti; Excel'e kaydedin.";UpdateCount();}
-  private void RemoveItem_Click(object s,RoutedEventArgs e){if(s is Button{Tag:RequestItem item}){_items.Remove(item);UpdateCount();StatusText.Text="Liste değişti; Excel'e kaydedin.";}}
-  private void SaveRequest_Click(object s,RoutedEventArgs e){try{if(_items.Count==0){MessageBox.Show("Önce listeye malzeme ekleyin.");return;}var name=RequestNameTextBox.Text.Trim();if(name.Length==0){MessageBox.Show("Dosya adı girin.");return;}var path=_service.SaveRequest(new(){Name=name,Items=new ObservableCollection<RequestItem>(_items)});StatusText.Text="Kaydedildi: "+Path.GetFileName(path);RefreshRequests();MessageBox.Show("Excel dosyası kaydedildi:\n"+path,"Kayıt tamamlandı");}catch(Exception ex){MessageBox.Show(ex.Message,"Kayıt hatası");}}
-  private void UpdateCount(){if(RequestCountText!=null)RequestCountText.Text=_items.Count==0?"Henüz ürün eklenmedi":$"{_items.Count} ürün satırı";}
-  private void RefreshRequests_Click(object s,RoutedEventArgs e)=>RefreshRequests();private void RefreshRequests(){if(PreviousList==null)return;PreviousList.ItemsSource=_service.GetSavedRequestFiles().Select(p=>new SavedRequest(p)).ToList();if(TotalRequestsText!=null)TotalRequestsText.Text=_service.GetSavedRequestFiles().Count.ToString();}
-  private void PreviousList_MouseDoubleClick(object s,MouseButtonEventArgs e){if(PreviousList.SelectedItem is not SavedRequest r)return;try{_items.Clear();foreach(var i in _service.LoadRequest(r.Path))_items.Add(i);RequestNameTextBox.Text=r.Name;StatusText.Text="Açıldı: "+r.Name;UpdateCount();ShowPage("new");}catch(Exception ex){MessageBox.Show(ex.Message,"Dosya açılamadı");}}
-  private void ExportPdf_Click(object s,RoutedEventArgs e)=>MessageBox.Show("PDF çıktısını sonraki adımda ekleyeceğiz. Excel kaydı hazır.","PDF Çıkar");
-  private sealed class SavedRequest(string path){public string Path{get;}=path;public string Name=>System.IO.Path.GetFileNameWithoutExtension(Path);public override string ToString()=>Name+" • "+File.GetLastWriteTime(Path).ToString("dd.MM.yyyy HH:mm");}
- }
+    private readonly DataService _service = new();
+    private readonly ObservableCollection<RequestItem> _items = [];
+    private List<Material> _materials = [];
+    private string? _currentListPath;
+    private DateTime _currentListCreatedAt = DateTime.Now;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        RequestGrid.ItemsSource = _items;
+
+        try
+        {
+            _materials = _service.LoadCatalog();
+            CatalogGrid.ItemsSource = _materials;
+            CatalogCountText.Text = _materials.Count.ToString();
+            CategoryCombo.ItemsSource = _materials.Select(m => m.Category).Distinct().OrderBy(v => v).ToList();
+            RefreshRequests();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Katalog hatası");
+        }
+
+        ShowPage("dashboard");
+        UpdateCount();
+    }
+
+    private void ShowPage(string page)
+    {
+        DashboardPanel.Visibility = page == "dashboard" ? Visibility.Visible : Visibility.Collapsed;
+        NewRequestPanel.Visibility = page == "new" ? Visibility.Visible : Visibility.Collapsed;
+        PreviousPanel.Visibility = page == "previous" ? Visibility.Visible : Visibility.Collapsed;
+        CatalogPanel.Visibility = page == "catalog" ? Visibility.Visible : Visibility.Collapsed;
+
+        SetNav(DashboardNav, page == "dashboard");
+        SetNav(NewRequestNav, page == "new");
+        SetNav(PreviousNav, page == "previous");
+        SetNav(CatalogNav, page == "catalog");
+
+        PageTitle.Text = page switch
+        {
+            "new" => "Liste Düzenleme",
+            "previous" => "Kayıtlı Listeler",
+            "catalog" => "Malzeme Kataloğu",
+            _ => "Genel Bakış"
+        };
+        PageSubtitle.Text = page switch
+        {
+            "new" => "Malzeme ekleyin; değişiklikler açık Excel listesine kaydedilir.",
+            "previous" => "Kaydedilmiş Excel listelerinizi açın.",
+            "catalog" => $"XML kataloğunda {_materials.Count} malzeme tanımlı.",
+            _ => "Malzeme listelerinizi tek yerden yönetin."
+        };
+
+        if (page == "previous")
+            RefreshRequests();
+    }
+
+    private static void SetNav(Button button, bool active)
+    {
+        button.Background = active
+            ? new SolidColorBrush(Color.FromRgb(32, 43, 73))
+            : Brushes.Transparent;
+        button.Foreground = active
+            ? new SolidColorBrush(Color.FromRgb(199, 210, 254))
+            : new SolidColorBrush(Color.FromRgb(169, 184, 204));
+    }
+
+    private void DashboardNav_Click(object sender, RoutedEventArgs e) => ShowPage("dashboard");
+
+    private void NewRequestNav_Click(object sender, RoutedEventArgs e)
+    {
+        var name = AskListName();
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+
+        name = name.Trim();
+        try
+        {
+            var path = _service.SaveRequest(new RequestDocument
+            {
+                Name = name,
+                CreatedAt = DateTime.Now,
+                Items = []
+            });
+
+            _currentListPath = path;
+            _currentListCreatedAt = DateTime.Now;
+            _items.Clear();
+            RequestNameTextBox.Text = name;
+            CurrentListTitle.Text = name;
+            StatusText.Text = "Boş Excel listesi oluşturuldu. Malzeme ekleyebilirsiniz.";
+            UpdateCount();
+            RefreshRequests();
+            ShowPage("new");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Liste oluşturulamadı");
+        }
+    }
+
+    private string? AskListName()
+    {
+        var dialog = new Window
+        {
+            Title = "Yeni Liste",
+            Width = 430,
+            Height = 205,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Owner = this,
+            ResizeMode = ResizeMode.NoResize,
+            Background = new SolidColorBrush(Color.FromRgb(17, 28, 48)),
+            Foreground = Brushes.White
+        };
+
+        var panel = new StackPanel { Margin = new Thickness(22) };
+        panel.Children.Add(new TextBlock
+        {
+            Text = "Liste adı",
+            FontSize = 17,
+            FontWeight = FontWeights.SemiBold,
+            Margin = new Thickness(0, 0, 0, 12)
+        });
+
+        var input = new TextBox
+        {
+            Height = 36,
+            Padding = new Thickness(9, 7, 9, 7),
+            FontSize = 14,
+            Background = new SolidColorBrush(Color.FromRgb(23, 36, 58)),
+            Foreground = Brushes.White,
+            BorderBrush = new SolidColorBrush(Color.FromRgb(51, 68, 95))
+        };
+        panel.Children.Add(input);
+
+        var buttons = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            Margin = new Thickness(0, 16, 0, 0)
+        };
+        var cancel = new Button { Content = "İptal", Width = 85, Height = 32, Margin = new Thickness(0, 0, 8, 0) };
+        cancel.Click += (_, _) => dialog.DialogResult = false;
+        var create = new Button { Content = "Liste Oluştur", Width = 115, Height = 32, IsDefault = true };
+        create.Click += (_, _) =>
+        {
+            if (string.IsNullOrWhiteSpace(input.Text))
+            {
+                MessageBox.Show(dialog, "Bir liste adı girin.", "Eksik bilgi");
+                input.Focus();
+                return;
+            }
+            dialog.DialogResult = true;
+        };
+        buttons.Children.Add(cancel);
+        buttons.Children.Add(create);
+        panel.Children.Add(buttons);
+        dialog.Content = panel;
+        dialog.Loaded += (_, _) => input.Focus();
+
+        return dialog.ShowDialog() == true ? input.Text.Trim() : null;
+    }
+
+    private void PreviousNav_Click(object sender, RoutedEventArgs e) => ShowPage("previous");
+    private void CatalogNav_Click(object sender, RoutedEventArgs e) => ShowPage("catalog");
+
+    private void CategoryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ProductCombo is null || CategoryCombo.SelectedItem is not string category)
+            return;
+
+        ProductCombo.ItemsSource = _materials
+            .Where(m => m.Category == category)
+            .OrderBy(m => m.Brand)
+            .ThenBy(m => m.Model)
+            .ToList();
+        ProductCombo.SelectedIndex = -1;
+    }
+
+    private void ProductCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ProductCombo.SelectedItem is Material material)
+            ProductDescriptionText.Text = $"{material.Specifications} • {material.Description}";
+    }
+
+    private void AddItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(_currentListPath))
+        {
+            MessageBox.Show("Önce yeni bir liste oluşturun.", "Liste seçilmedi");
+            return;
+        }
+
+        if (ProductCombo.SelectedItem is not Material material)
+        {
+            MessageBox.Show("Önce bir malzeme seçin.");
+            return;
+        }
+
+        if (!decimal.TryParse(QuantityTextBox.Text, out var quantity) || quantity <= 0)
+        {
+            MessageBox.Show("Miktar sıfırdan büyük bir sayı olmalı.");
+            return;
+        }
+
+        var existing = _items.FirstOrDefault(i =>
+            i.Category == material.Category &&
+            i.Brand == material.Brand &&
+            i.Model == material.Model);
+
+        if (existing is not null)
+            existing.Quantity += quantity;
+        else
+            _items.Add(new RequestItem
+            {
+                Category = material.Category,
+                Brand = material.Brand,
+                Model = material.Model,
+                Specifications = material.Specifications,
+                Unit = material.Unit,
+                Quantity = quantity
+            });
+
+        RequestGrid.Items.Refresh();
+        QuantityTextBox.Text = "1";
+        UpdateCount();
+        SaveCurrentListSilently();
+    }
+
+    private void RemoveItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: RequestItem item })
+        {
+            _items.Remove(item);
+            UpdateCount();
+            SaveCurrentListSilently();
+        }
+    }
+
+    private void SaveRequest_Click(object sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(_currentListPath))
+        {
+            MessageBox.Show("Önce yeni bir liste oluşturun.");
+            return;
+        }
+
+        try
+        {
+            SaveCurrentListSilently();
+            StatusText.Text = "Liste kaydedildi: " + Path.GetFileName(_currentListPath);
+            RefreshRequests();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Kayıt hatası");
+        }
+    }
+
+    private void SaveCurrentListSilently()
+    {
+        if (string.IsNullOrWhiteSpace(_currentListPath))
+            return;
+
+        var name = Path.GetFileNameWithoutExtension(_currentListPath);
+        _service.SaveRequest(new RequestDocument
+        {
+            Name = name,
+            CreatedAt = _currentListCreatedAt,
+            Items = new ObservableCollection<RequestItem>(_items)
+        }, _currentListPath);
+
+        StatusText.Text = "Değişiklikler Excel listesine kaydedildi.";
+        RefreshRequests();
+    }
+
+    private void UpdateCount()
+    {
+        if (RequestCountText is not null)
+            RequestCountText.Text = _items.Count == 0 ? "Henüz malzeme eklenmedi" : $"{_items.Count} malzeme satırı";
+    }
+
+    private void RefreshRequests_Click(object sender, RoutedEventArgs e) => RefreshRequests();
+
+    private void RefreshRequests()
+    {
+        if (PreviousList is null)
+            return;
+
+        var files = _service.GetSavedRequestFiles();
+        PreviousList.ItemsSource = files.Select(path => new SavedRequest(path)).ToList();
+        if (TotalRequestsText is not null)
+            TotalRequestsText.Text = files.Count.ToString();
+    }
+
+    private void PreviousList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (PreviousList.SelectedItem is not SavedRequest request)
+            return;
+
+        try
+        {
+            _items.Clear();
+            foreach (var item in _service.LoadRequest(request.Path))
+                _items.Add(item);
+
+            _currentListPath = request.Path;
+            _currentListCreatedAt = File.GetCreationTime(request.Path);
+            RequestNameTextBox.Text = request.Name;
+            CurrentListTitle.Text = request.Name;
+            StatusText.Text = "Açıldı: " + request.Name;
+            UpdateCount();
+            ShowPage("new");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Liste açılamadı");
+        }
+    }
+
+    private void ExportPdf_Click(object sender, RoutedEventArgs e)
+    {
+        MessageBox.Show("PDF çıktısı henüz uygulanmadı.", "PDF Çıkar");
+    }
+
+    private sealed class SavedRequest(string path)
+    {
+        public string Path { get; } = path;
+        public string Name => System.IO.Path.GetFileNameWithoutExtension(Path);
+        public override string ToString() => Name + " • " + File.GetLastWriteTime(Path).ToString("dd.MM.yyyy HH:mm");
+    }
 }
