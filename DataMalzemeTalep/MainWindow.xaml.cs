@@ -44,19 +44,82 @@ public partial class MainWindow : Window
 
     private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        // Breakpoints use the whole window width; keep two-column cards until the
-        // actual content area becomes genuinely narrow.
+        // Base breakpoints on window size; the left navigation consumes a fixed
+        // portion of the window, so keep the dashboard layout conservative.
         var compact = ActualWidth < 1050;
         var narrow = ActualWidth < 680;
 
         DashboardArtColumn.Width = compact ? new GridLength(0) : new GridLength(150);
         DashboardHeroArt.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
-        DashboardStatsGrid.Columns = narrow ? 1 : (compact ? 2 : 3);
+
+        if (narrow)
+        {
+            // Very narrow: one full-width statistic card per row.
+            StatsColumn1.Width = new GridLength(1, GridUnitType.Star);
+            StatsColumn2.Width = new GridLength(0);
+            StatsColumn3.Width = new GridLength(0);
+            Grid.SetRow(TotalListsCard, 0);
+            Grid.SetColumn(TotalListsCard, 0);
+            Grid.SetRow(LastCreatedCard, 1);
+            Grid.SetColumn(LastCreatedCard, 0);
+            Grid.SetRow(CatalogStatsCard, 2);
+            Grid.SetColumn(CatalogStatsCard, 0);
+            Grid.SetColumnSpan(TotalListsCard, 1);
+            Grid.SetColumnSpan(LastCreatedCard, 1);
+            Grid.SetColumnSpan(CatalogStatsCard, 1);
+            TotalListsCard.Margin = new Thickness(0, 0, 0, 10);
+            LastCreatedCard.Margin = new Thickness(0, 0, 0, 10);
+            CatalogStatsCard.Margin = new Thickness(0);
+            StatsRow1.Height = GridLength.Auto;
+            StatsRow2.Height = GridLength.Auto;
+        }
+        else if (compact)
+        {
+            // Medium: two cards on the first row, catalog card spans the second.
+            StatsColumn1.Width = new GridLength(1, GridUnitType.Star);
+            StatsColumn2.Width = new GridLength(1, GridUnitType.Star);
+            StatsColumn3.Width = new GridLength(0);
+            Grid.SetRow(TotalListsCard, 0);
+            Grid.SetColumn(TotalListsCard, 0);
+            Grid.SetRow(LastCreatedCard, 0);
+            Grid.SetColumn(LastCreatedCard, 1);
+            Grid.SetRow(CatalogStatsCard, 1);
+            Grid.SetColumn(CatalogStatsCard, 0);
+            Grid.SetColumnSpan(TotalListsCard, 1);
+            Grid.SetColumnSpan(LastCreatedCard, 1);
+            Grid.SetColumnSpan(CatalogStatsCard, 2);
+            TotalListsCard.Margin = new Thickness(0, 0, 8, 0);
+            LastCreatedCard.Margin = new Thickness(8, 0, 0, 0);
+            CatalogStatsCard.Margin = new Thickness(0, 10, 0, 0);
+            StatsRow1.Height = GridLength.Auto;
+            StatsRow2.Height = GridLength.Auto;
+        }
+        else
+        {
+            // Wide: three equal statistic cards in one row.
+            StatsColumn1.Width = new GridLength(1, GridUnitType.Star);
+            StatsColumn2.Width = new GridLength(1, GridUnitType.Star);
+            StatsColumn3.Width = new GridLength(1, GridUnitType.Star);
+            Grid.SetRow(TotalListsCard, 0);
+            Grid.SetColumn(TotalListsCard, 0);
+            Grid.SetRow(LastCreatedCard, 0);
+            Grid.SetColumn(LastCreatedCard, 1);
+            Grid.SetRow(CatalogStatsCard, 0);
+            Grid.SetColumn(CatalogStatsCard, 2);
+            Grid.SetColumnSpan(TotalListsCard, 1);
+            Grid.SetColumnSpan(LastCreatedCard, 1);
+            Grid.SetColumnSpan(CatalogStatsCard, 1);
+            TotalListsCard.Margin = new Thickness(0, 0, 8, 0);
+            LastCreatedCard.Margin = new Thickness(4, 0);
+            CatalogStatsCard.Margin = new Thickness(8, 0, 0, 0);
+            StatsRow1.Height = GridLength.Auto;
+            StatsRow2.Height = new GridLength(0);
+        }
 
         if (compact)
         {
             QuickActionsColumn.Width = new GridLength(1, GridUnitType.Star);
-            GettingStartedColumn.Width = new GridLength(1, GridUnitType.Star);
+            GettingStartedColumn.Width = new GridLength(0);
             Grid.SetRow(QuickActionsCard, 0);
             Grid.SetColumn(QuickActionsCard, 0);
             Grid.SetRow(GettingStartedCard, 1);
@@ -76,12 +139,10 @@ public partial class MainWindow : Window
             Grid.SetColumn(GettingStartedCard, 1);
             QuickActionsCard.Margin = new Thickness(0, 0, 12, 0);
             GettingStartedCard.Margin = new Thickness(12, 0, 0, 0);
-            QuickActionsRow.Height = new GridLength(1, GridUnitType.Star);
-            GettingStartedRow.Height = new GridLength(1, GridUnitType.Star);
+            QuickActionsRow.Height = GridLength.Auto;
+            GettingStartedRow.Height = GridLength.Auto;
         }
 
-        // Responsive reflow changes the content height; avoid preserving an old
-        // vertical offset that leaves the hero card clipped after resizing.
         if (DashboardPanel.Visibility == Visibility.Visible)
             MainContentScrollViewer.ScrollToTop();
     }
