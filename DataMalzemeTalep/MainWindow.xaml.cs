@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
+using ClosedXML.Excel;
 using DataMalzemeTalep.Models;
 using DataMalzemeTalep.Services;
 
@@ -660,6 +661,216 @@ public partial class MainWindow : Window
 
     private static string NormalizeModel(string model) =>
         string.Join("", model.Trim().Where(c => !char.IsWhiteSpace(c))).ToUpperInvariant();
+
+    private void ExportCatalogExcel_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            CatalogGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+            CatalogGrid.CommitEdit(DataGridEditingUnit.Row, true);
+
+            var dialog = new SaveFileDialog
+            {
+                Title = "Kataloğu Excel olarak dışa aktar",
+                Filter = "Excel çalışma kitabı (*.xlsx)|*.xlsx",
+                FileName = $"MalzemeKatalogu_{DateTime.Now:yyyyMMdd}.xlsx",
+                DefaultExt = ".xlsx",
+                AddExtension = true,
+                OverwritePrompt = true
+            };
+
+            if (dialog.ShowDialog(this) != true)
+                return;
+
+            using var workbook = new XLWorkbook();
+            var sheet = workbook.Worksheets.Add("Katalog");
+            string[] headers = ["Kategori", "Marka", "Ürün Kodu", "Teknik Özellikler", "Açıklama", "Birim"];
+            for (var col = 1; col <= headers.Length; col++)
+            {
+                var cell = sheet.Cell(1, col);
+                cell.Value = headers[col - 1];
+                cell.Style.Font.Bold = true;
+                cell.Style.Font.FontColor = XLColor.White;
+                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#1B2A4B");
+                cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            }
+
+            for (var i = 0; i < _materials.Count; i++)
+            {
+                var material = _materials[i];
+                var row = i + 2;
+                sheet.Cell(row, 1).Value = material.Category;
+                sheet.Cell(row, 2).Value = material.Brand;
+                sheet.Cell(row, 3).Value = material.Model;
+                sheet.Cell(row, 4).Value = material.Specifications;
+                sheet.Cell(row, 5).Value = material.Description;
+                sheet.Cell(row, 6).Value = material.Unit;
+            }
+
+            sheet.SheetView.FreezeRows(1);
+            sheet.RangeUsed()?.SetAutoFilter();
+            sheet.Columns().AdjustToContents();
+            sheet.Column(4).Width = Math.Min(Math.Max(sheet.Column(4).Width, 24), 55);
+            sheet.Column(5).Width = Math.Min(Math.Max(sheet.Column(5).Width, 20), 45);
+            sheet.Columns().Style.Alignment.Vertical = XLAlignmentVerticalValues.Top;
+            workbook.SaveAs(dialog.FileName);
+
+            MessageBox.Show($"Katalog Excel'e aktarıldı.\n{dialog.FileName}",
+                "Dışa aktarma tamamlandı", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Katalog Excel'e aktarılamadı:\n" + ex.Message,
+                "Dışa aktarma hatası", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void ImportCatalogExcel_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = "Düzenlenmiş katalog Excel dosyasını seçin",
+            Filter = "Excel çalışma kitabı (*.xlsx)|*.xlsx",
+            Multiselect = false,
+            CheckFileExists = true
+        };
+
+        if (dialog.ShowDialog(this) != true)
+            return;
+
+        try
+        {
+            CatalogGrid.CommitEdit(DataGridEditingUnit.Cell, true);
+            CatalogGrid.CommitEdit(DataGridEditingUnit.Row, true);
+
+            using var workbook = new XLWorkbook(dialog.FileName);
+            var sheet = workbook.Worksheets.FirstOrDefault();
+            if (sheet is null || sheet.LastRowUsed() is null)
+            {
+                MessageBox.Show("Excel dosyasında okunabilir bir katalog tablosu bulunamadı.",
+                    "İçe aktarma", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var headerMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            var lastHeaderColumn = sheet.Row(1).LastCellUsed()?.Address.ColumnNumber ?? 0;
+            for (var col = 1; col <= lastHeaderColumn; col++)
+            {
+                var header = NormalizeHeader(sheet.Cell(1, col).GetString());
+                if (!string.IsNullOrWhiteSpace(header) && !headerMap.ContainsKey(header))
+                    headerMap[header] = col;
+            }
+
+            int FindColumn(params string[] aliases)
+            {
+                foreach (var alias in aliases)
+                    if (headerMap.TryGetValue(NormalizeHeader(alias), out var column))
+                        return column;
+                return 0;
+            }
+
+            var categoryCol = FindColumn("Kategori", "Category");
+            var brandCol = FindColumn("Marka", "Brand");
+            var modelCol = FindColumn("Ürün Kodu", "Urun Kodu", "Model", "Product Code", "ProductCode");
+            var specsCol = FindColumn("Teknik Özellikler", "Teknik Ozellikler", "Specifications", "Özellikler");
+            var descriptionCol = FindColumn("Açıklama", "Aciklama", "Description");
+            var unitCol = FindColumn("Birim", "Unit");
+
+            if (modelCol == 0)
+            {
+                MessageBox.Show("Excel başlıklarında 'Ürün Kodu' veya 'Model' sütunu bulunamadı. Dışa aktarılan şablonu kullan.",
+                    "Geçersiz katalog dosyası", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var incomingMaterials = new List<Material>();
+            for (var row = 2; row <= sheet.LastRowUsed()!.RowNumber(); row++)
+            {
+                string Read(int column) => column == 0 ? string.Empty : sheet.Cell(row, column).GetString().Trim();
+
+                var incoming = new Material
+                {
+                    Category = Read(categoryCol),
+                    Brand = Read(brandCol),
+                    Model = Read(modelCol),
+                    Specifications = Read(specsCol),
+                    Description = Read(descriptionCol),
+                    Unit = string.IsNullOrWhiteSpace(Read(unitCol)) ? "Adet" : Read(unitCol)
+                };
+
+                if (string.IsNullOrWhiteSpace(incoming.Category) &&
+                    string.IsNullOrWhiteSpace(incoming.Brand) &&
+                    string.IsNullOrWhiteSpace(incoming.Model) &&
+                    string.IsNullOrWhiteSpace(incoming.Specifications) &&
+                    string.IsNullOrWhiteSpace(incoming.Description))
+                    continue;
+
+                incomingMaterials.Add(incoming);
+            }
+
+            if (incomingMaterials.Count == 0)
+            {
+                MessageBox.Show("Excel dosyasında içe aktarılacak ürün satırı bulunamadı.",
+                    "İçe aktarma", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var added = 0;
+            var updated = 0;
+            var noCodeAdded = 0;
+
+            foreach (var incoming in incomingMaterials)
+            {
+                // Product code (Model) is the matching key. Rows without a code are
+                // always added as new records; no speculative match is attempted.
+                var existing = string.IsNullOrWhiteSpace(incoming.Model)
+                    ? null
+                    : _materials.FirstOrDefault(m =>
+                        !string.IsNullOrWhiteSpace(m.Model) &&
+                        string.Equals(NormalizeModel(m.Model), NormalizeModel(incoming.Model),
+                            StringComparison.OrdinalIgnoreCase));
+
+                if (existing is not null)
+                {
+                    existing.Category = incoming.Category;
+                    existing.Brand = incoming.Brand;
+                    existing.Model = incoming.Model;
+                    existing.Specifications = incoming.Specifications;
+                    existing.Description = incoming.Description;
+                    existing.Unit = incoming.Unit;
+                    updated++;
+                }
+                else
+                {
+                    _materials.Add(incoming);
+                    added++;
+                    if (string.IsNullOrWhiteSpace(incoming.Model))
+                        noCodeAdded++;
+                }
+            }
+
+            _service.SaveCatalog(_materials);
+            CatalogGrid.ItemsSource = null;
+            CatalogGrid.ItemsSource = _materials;
+            CatalogCountText.Text = _materials.Count.ToString();
+            RefreshCatalogSelectors();
+
+            MessageBox.Show(
+                $"Excel içe aktarma tamamlandı.\n\nGüncellenen ürün: {updated}\nYeni eklenen ürün: {added}\n" +
+                $"Ürün kodu olmayan yeni kayıt: {noCodeAdded}\nKatalog toplamı: {_materials.Count}",
+                "Katalog içe aktarma", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Excel katalog içe aktarılırken hata oluştu:\n" + ex.Message,
+                "İçe aktarma hatası", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private static string NormalizeHeader(string value) =>
+        string.Join(" ", value.Trim().ToUpperInvariant().Replace('İ', 'I').Replace('Ş', 'S')
+            .Replace('Ğ', 'G').Replace('Ü', 'U').Replace('Ö', 'O').Replace('Ç', 'C')
+            .Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
 
     private void SaveCatalog_Click(object sender, RoutedEventArgs e)
     {
