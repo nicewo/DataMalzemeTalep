@@ -671,26 +671,12 @@
                                     IsReadOnly="True"
                                     RowBackground="#111C30">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn
-                                            Width="1*"
-                                            Binding="{Binding Category}"
-                                            Header="Kategori" />
-                                        <DataGridTextColumn
-                                            Width="1.8*"
-                                            Binding="{Binding DisplayName}"
-                                            Header="Marka / Model" />
-                                        <DataGridTextColumn
-                                            Width="2*"
-                                            Binding="{Binding Specifications}"
-                                            Header="Teknik özellikler" />
-                                        <DataGridTextColumn
-                                            Width="0.7*"
-                                            Binding="{Binding Quantity}"
-                                            Header="Miktar" />
-                                        <DataGridTextColumn
-                                            Width="0.7*"
-                                            Binding="{Binding Unit}"
-                                            Header="Birim" />
+                                        <DataGridTextColumn Width="1.1*" Binding="{Binding Category}" Header="Kategori" />
+                                        <DataGridTextColumn Width="0.9*" Binding="{Binding Brand}" Header="Marka" />
+                                        <DataGridTextColumn Width="1.1*" Binding="{Binding Model}" Header="Model" />
+                                        <DataGridTextColumn Width="2*" Binding="{Binding Specifications}" Header="Açıklama / Teknik Özellik" />
+                                        <DataGridTextColumn Width="0.65*" Binding="{Binding Quantity}" Header="Miktar" />
+                                        <DataGridTextColumn Width="0.65*" Binding="{Binding Unit}" Header="Birim" />
                                         <DataGridTemplateColumn Width="80" Header="">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
