@@ -1,6 +1,8 @@
-using System.Collections.ObjectModel; using System.Xml.Serialization;
+using System.Collections.ObjectModel;
+using System.Xml.Serialization;
 namespace DataMalzemeTalep.Models;
-[XmlRoot("Catalog")] public class MaterialCatalog{[XmlElement("Material")]public List<Material> Materials{get;set;}=[];}
-public class Material{[XmlAttribute]public string Id{get;set;}=Guid.NewGuid().ToString("N");public string Category{get;set;}="";public string Brand{get;set;}="";public string Model{get;set;}="";public string Specifications{get;set;}="";public string Description{get;set;}="";public string Unit{get;set;}="Adet";[XmlIgnore]public string DisplayName=>$"{Brand} {Model}".Trim();}
-public class RequestItem{public string Category{get;set;}="";public string Brand{get;set;}="";public string Model{get;set;}="";public string DisplayName=>$"{Brand} {Model}".Trim();public string Specifications{get;set;}="";public decimal Quantity{get;set;}=1;public string Unit{get;set;}="Adet";}
-public class RequestDocument{public string Name{get;set;}="Malzeme Talebi";public DateTime CreatedAt{get;set;}=DateTime.Now;public ObservableCollection<RequestItem> Items{get;set;}=[];}
+
+[XmlRoot("Catalog")] public class MaterialCatalog { [XmlElement("Material")] public List<Material> Materials { get; set; } = []; }
+public class Material { [XmlAttribute] public string Id { get; set; } = Guid.NewGuid().ToString("N"); public string Category { get; set; } = ""; public string Brand { get; set; } = ""; public string Model { get; set; } = ""; public string Specifications { get; set; } = ""; public string Description { get; set; } = ""; public string Unit { get; set; } = "Adet"; [XmlIgnore] public string DisplayName => $"{Brand} {Model}".Trim(); }
+public class RequestItem { public string Category { get; set; } = ""; public string Brand { get; set; } = ""; public string Model { get; set; } = ""; public string DisplayName => $"{Brand} {Model}".Trim(); public string Specifications { get; set; } = ""; public decimal Quantity { get; set; } = 1; public string Unit { get; set; } = "Adet"; }
+public class RequestDocument { public string Name { get; set; } = "Malzeme Talebi"; public DateTime CreatedAt { get; set; } = DateTime.Now; public ObservableCollection<RequestItem> Items { get; set; } = []; }

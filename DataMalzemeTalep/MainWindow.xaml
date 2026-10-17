@@ -1,226 +1,559 @@
-﻿<Window x:Class="DataMalzemeTalep.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Data Malzeme Talep"
-        Height="900" Width="1440" MinHeight="720" MinWidth="1120"
-        WindowStartupLocation="CenterScreen"
-        Background="{StaticResource AppBackground}"
-        Foreground="{StaticResource TextPrimary}"
-        FontFamily="Segoe UI">
+﻿<Window
+    x:Class="DataMalzemeTalep.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Data Malzeme Talep"
+    Width="1440"
+    Height="900"
+    MinWidth="1120"
+    MinHeight="720"
+    Background="{StaticResource AppBackground}"
+    FontFamily="Segoe UI"
+    Foreground="{StaticResource TextPrimary}"
+    WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="248"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="248" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- Sidebar -->
-        <Border Grid.Column="0" Background="{StaticResource SidebarBackground}" BorderBrush="#202D42" BorderThickness="0,0,1,0">
+        <!--  Sidebar  -->
+        <Border
+            Grid.Column="0"
+            Background="{StaticResource SidebarBackground}"
+            BorderBrush="#202D42"
+            BorderThickness="0,0,1,0">
             <DockPanel Margin="18,22,18,18">
                 <StackPanel DockPanel.Dock="Top">
-                    <StackPanel Orientation="Horizontal" Margin="5,4,0,34">
-                        <Border Width="40" Height="40" CornerRadius="12" Background="#111111" BorderBrush="#D9A514" BorderThickness="1" VerticalAlignment="Center">
-                            <TextBlock Text="D" FontSize="22" FontWeight="Bold" Foreground="#D9A514" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <StackPanel Margin="5,4,0,34" Orientation="Horizontal">
+                        <Border
+                            Width="40"
+                            Height="40"
+                            VerticalAlignment="Center"
+                            Background="#111111"
+                            BorderBrush="#D9A514"
+                            BorderThickness="1"
+                            CornerRadius="12">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="22"
+                                FontWeight="Bold"
+                                Foreground="#D9A514"
+                                Text="D" />
                         </Border>
                         <StackPanel Margin="11,1,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="DATA OTOMASYON" FontSize="11" FontWeight="Bold" Foreground="#D9A514"/>
-                            <TextBlock Text="Malzeme Talep" FontSize="16" FontWeight="SemiBold" Foreground="#F8FAFC" Margin="0,2,0,0"/>
+                            <TextBlock
+                                FontSize="11"
+                                FontWeight="Bold"
+                                Foreground="#D9A514"
+                                Text="DATA OTOMASYON" />
+                            <TextBlock
+                                Margin="0,2,0,0"
+                                FontSize="16"
+                                FontWeight="SemiBold"
+                                Foreground="#F8FAFC"
+                                Text="Malzeme Talep" />
                         </StackPanel>
                     </StackPanel>
 
-                    <TextBlock Text="ÇALIŞMA ALANI" FontSize="10" FontWeight="Bold" Foreground="#61718A" Margin="12,0,0,10"/>
-                    <Button x:Name="DashboardNav" Style="{StaticResource NavButtonStyle}" Click="DashboardNav_Click" Background="#3B3017" Foreground="#F2C14E">
+                    <TextBlock
+                        Margin="12,0,0,10"
+                        FontSize="10"
+                        FontWeight="Bold"
+                        Foreground="#61718A"
+                        Text="ÇALIŞMA ALANI" />
+                    <Button
+                        x:Name="DashboardNav"
+                        Background="#3B3017"
+                        Click="DashboardNav_Click"
+                        Foreground="#F2C14E"
+                        Style="{StaticResource NavButtonStyle}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="▦" Width="28" FontSize="17" VerticalAlignment="Center"/>
-                            <TextBlock Text="Genel Bakış" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                            <TextBlock
+                                Width="28"
+                                VerticalAlignment="Center"
+                                FontSize="17"
+                                Text="▦" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="SemiBold"
+                                Text="Genel Bakış" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="NewRequestNav" Style="{StaticResource NavButtonStyle}" Click="NewRequestNav_Click">
+                    <Button
+                        x:Name="NewRequestNav"
+                        Click="NewRequestNav_Click"
+                        Style="{StaticResource NavButtonStyle}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="＋" Width="28" FontSize="20" VerticalAlignment="Center"/>
-                            <TextBlock Text="Yeni Talep" VerticalAlignment="Center"/>
+                            <TextBlock
+                                Width="28"
+                                VerticalAlignment="Center"
+                                FontSize="20"
+                                Text="＋" />
+                            <TextBlock VerticalAlignment="Center" Text="Yeni Talep" />
                         </StackPanel>
                     </Button>
-                    <Button x:Name="PreviousNav" Style="{StaticResource NavButtonStyle}" Click="PreviousNav_Click">
+                    <Button
+                        x:Name="PreviousNav"
+                        Click="PreviousNav_Click"
+                        Style="{StaticResource NavButtonStyle}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="▤" Width="28" FontSize="17" VerticalAlignment="Center"/>
-                            <TextBlock Text="Önceki Talepler" VerticalAlignment="Center"/>
+                            <TextBlock
+                                Width="28"
+                                VerticalAlignment="Center"
+                                FontSize="17"
+                                Text="▤" />
+                            <TextBlock VerticalAlignment="Center" Text="Önceki Talepler" />
                         </StackPanel>
                     </Button>
 
-                    <TextBlock Text="YÖNETİM" FontSize="10" FontWeight="Bold" Foreground="#61718A" Margin="12,28,0,10"/>
-                    <Button x:Name="CatalogNav" Style="{StaticResource NavButtonStyle}" Click="CatalogNav_Click">
+                    <TextBlock
+                        Margin="12,28,0,10"
+                        FontSize="10"
+                        FontWeight="Bold"
+                        Foreground="#61718A"
+                        Text="YÖNETİM" />
+                    <Button
+                        x:Name="CatalogNav"
+                        Click="CatalogNav_Click"
+                        Style="{StaticResource NavButtonStyle}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="▣" Width="28" FontSize="16" VerticalAlignment="Center"/>
-                            <TextBlock Text="Malzeme Kataloğu" VerticalAlignment="Center"/>
+                            <TextBlock
+                                Width="28"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Text="▣" />
+                            <TextBlock VerticalAlignment="Center" Text="Malzeme Kataloğu" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
 
-                <Border DockPanel.Dock="Bottom" Background="#131F33" BorderBrush="#26354D" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,18,0,0">
+                <Border
+                    Margin="0,18,0,0"
+                    Padding="12"
+                    Background="#131F33"
+                    BorderBrush="#26354D"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    DockPanel.Dock="Bottom">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="7" Height="7" Fill="{StaticResource SuccessBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="Yerel çalışma alanı" FontSize="11" Foreground="#D5E2F2" FontWeight="SemiBold"/>
+                            <Ellipse
+                                Width="7"
+                                Height="7"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Fill="{StaticResource SuccessBrush}" />
+                            <TextBlock
+                                FontSize="11"
+                                FontWeight="SemiBold"
+                                Foreground="#D5E2F2"
+                                Text="Yerel çalışma alanı" />
                         </StackPanel>
-                        <TextBlock Text="Dosyalar bilgisayarınızda saklanır." FontSize="10" Foreground="#8192AA" TextWrapping="Wrap" Margin="0,8,0,0" LineHeight="15"/>
+                        <TextBlock
+                            Margin="0,8,0,0"
+                            FontSize="10"
+                            Foreground="#8192AA"
+                            LineHeight="15"
+                            Text="Dosyalar bilgisayarınızda saklanır."
+                            TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
             </DockPanel>
         </Border>
 
-        <!-- Main area -->
+        <!--  Main area  -->
         <Grid Grid.Column="1" Background="{StaticResource AppBackground}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="76"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="76" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="#202D42" BorderThickness="0,0,0,1" Background="#0D1425">
+            <Border
+                Grid.Row="0"
+                Background="#0D1425"
+                BorderBrush="#202D42"
+                BorderThickness="0,0,0,1">
                 <Grid Margin="32,0,32,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock x:Name="PageTitle" Text="Genel Bakış" FontSize="19" FontWeight="SemiBold"/>
-                        <TextBlock x:Name="PageSubtitle" Text="Malzeme taleplerinizi tek yerden yönetin." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,4,0,0"/>
+                        <TextBlock
+                            x:Name="PageTitle"
+                            FontSize="19"
+                            FontWeight="SemiBold"
+                            Text="Genel Bakış" />
+                        <TextBlock
+                            x:Name="PageSubtitle"
+                            Margin="0,4,0,0"
+                            FontSize="12"
+                            Foreground="{StaticResource TextSecondary}"
+                            Text="Malzeme taleplerinizi tek yerden yönetin." />
                     </StackPanel>
-                    <Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Click="ExportPdf_Click" VerticalAlignment="Center">
+                    <Button
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Click="ExportPdf_Click"
+                        Style="{StaticResource PrimaryButtonStyle}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="↓" FontSize="16" Margin="0,0,9,0"/>
-                            <TextBlock Text="PDF Çıkar" VerticalAlignment="Center"/>
+                            <TextBlock
+                                Margin="0,0,9,0"
+                                FontSize="16"
+                                Text="↓" />
+                            <TextBlock VerticalAlignment="Center" Text="PDF Çıkar" />
                         </StackPanel>
                     </Button>
                 </Grid>
             </Border>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer
+                Grid.Row="1"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
                 <Grid Margin="32,28,32,32">
-                    <!-- Dashboard -->
+                    <!--  Dashboard  -->
                     <StackPanel x:Name="DashboardPanel">
-                        <Border CornerRadius="18" Padding="28" Margin="0,0,0,24" ClipToBounds="True">
+                        <Border
+                            Margin="0,0,0,24"
+                            Padding="28"
+                            ClipToBounds="True"
+                            CornerRadius="18">
                             <Border.Background>
                                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#1B2A4B" Offset="0"/>
-                                    <GradientStop Color="#20234A" Offset="0.58"/>
-                                    <GradientStop Color="#17243A" Offset="1"/>
+                                    <GradientStop Offset="0" Color="#1B2A4B" />
+                                    <GradientStop Offset="0.58" Color="#20234A" />
+                                    <GradientStop Offset="1" Color="#17243A" />
                                 </LinearGradientBrush>
                             </Border.Background>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="180"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="180" />
                                 </Grid.ColumnDefinitions>
-                                <StackPanel VerticalAlignment="Center" MaxWidth="650">
-                                    <Border Background="#4A3A13" CornerRadius="5" Padding="9,5" HorizontalAlignment="Left" Margin="0,0,0,14">
-                                        <TextBlock Text="MALZEME YÖNETİMİ" FontSize="10" FontWeight="Bold" Foreground="#F2C14E"/>
+                                <StackPanel MaxWidth="650" VerticalAlignment="Center">
+                                    <Border
+                                        Margin="0,0,0,14"
+                                        Padding="9,5"
+                                        HorizontalAlignment="Left"
+                                        Background="#4A3A13"
+                                        CornerRadius="5">
+                                        <TextBlock
+                                            FontSize="10"
+                                            FontWeight="Bold"
+                                            Foreground="#F2C14E"
+                                            Text="MALZEME YÖNETİMİ" />
                                     </Border>
-                                    <TextBlock Text="Taleplerinizi kolayca yönetin." FontSize="28" FontWeight="Bold" Foreground="#F8FAFC" TextWrapping="Wrap"/>
-                                    <TextBlock Text="Yeni bir malzeme listesi oluşturun, kayıtlı taleplerinize ulaşın ve çıktılarınızı hazırlayın." FontSize="13" Foreground="#B5C3DA" TextWrapping="Wrap" Margin="0,10,0,22" LineHeight="21"/>
-                                    <Button Style="{StaticResource PrimaryButtonStyle}" HorizontalAlignment="Left" Click="NewRequestNav_Click">
+                                    <TextBlock
+                                        FontSize="28"
+                                        FontWeight="Bold"
+                                        Foreground="#F8FAFC"
+                                        Text="Taleplerinizi kolayca yönetin."
+                                        TextWrapping="Wrap" />
+                                    <TextBlock
+                                        Margin="0,10,0,22"
+                                        FontSize="13"
+                                        Foreground="#B5C3DA"
+                                        LineHeight="21"
+                                        Text="Yeni bir malzeme listesi oluşturun, kayıtlı taleplerinize ulaşın ve çıktılarınızı hazırlayın."
+                                        TextWrapping="Wrap" />
+                                    <Button
+                                        HorizontalAlignment="Left"
+                                        Click="NewRequestNav_Click"
+                                        Style="{StaticResource PrimaryButtonStyle}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="＋" FontSize="18" Margin="0,0,8,0"/>
-                                            <TextBlock Text="Yeni Talep Oluştur" VerticalAlignment="Center"/>
+                                            <TextBlock
+                                                Margin="0,0,8,0"
+                                                FontSize="18"
+                                                Text="＋" />
+                                            <TextBlock VerticalAlignment="Center" Text="Yeni Talep Oluştur" />
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
-                                <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="150">
-                                    <Ellipse Width="144" Height="144" Stroke="#6D571B" StrokeThickness="1" Opacity="0.8"/>
-                                    <Ellipse Width="108" Height="108" Stroke="#D9A514" StrokeThickness="1" Opacity="0.8"/>
-                                    <Ellipse Width="72" Height="72" Fill="#161616"/>
-                                    <TextBlock Text="D" FontSize="26" FontWeight="Bold" Foreground="#D9A514" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <Ellipse Width="11" Height="11" Fill="#A5B4FC" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,14,15,0"/>
-                                    <Ellipse Width="7" Height="7" Fill="#34D399" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="18,0,0,18"/>
+                                <Grid
+                                    Grid.Column="1"
+                                    Width="150"
+                                    Height="150"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+                                    <Ellipse
+                                        Width="144"
+                                        Height="144"
+                                        Opacity="0.8"
+                                        Stroke="#6D571B"
+                                        StrokeThickness="1" />
+                                    <Ellipse
+                                        Width="108"
+                                        Height="108"
+                                        Opacity="0.8"
+                                        Stroke="#D9A514"
+                                        StrokeThickness="1" />
+                                    <Ellipse
+                                        Width="72"
+                                        Height="72"
+                                        Fill="#161616" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="26"
+                                        FontWeight="Bold"
+                                        Foreground="#D9A514"
+                                        Text="D" />
+                                    <Ellipse
+                                        Width="11"
+                                        Height="11"
+                                        Margin="0,14,15,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Fill="#A5B4FC" />
+                                    <Ellipse
+                                        Width="7"
+                                        Height="7"
+                                        Margin="18,0,0,18"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Fill="#34D399" />
                                 </Grid>
                             </Grid>
                         </Border>
 
-                        <UniformGrid Columns="3" Margin="0,0,0,24">
-                            <Border Style="{StaticResource PanelStyle}" Padding="19" Margin="0,0,12,0">
+                        <UniformGrid Margin="0,0,0,24" Columns="3">
+                            <Border
+                                Margin="0,0,12,0"
+                                Padding="19"
+                                Style="{StaticResource PanelStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="TOPLAM TALEP" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondary}"/>
-                                    <TextBlock Text="—" FontSize="27" FontWeight="SemiBold" Margin="0,12,0,5"/>
-                                    <TextBlock Text="Kayıtlar tarandığında gösterilecek" FontSize="11" Foreground="#7F91AA" TextWrapping="Wrap"/>
+                                    <TextBlock
+                                        FontSize="10"
+                                        FontWeight="Bold"
+                                        Foreground="{StaticResource TextSecondary}"
+                                        Text="TOPLAM TALEP" />
+                                    <TextBlock
+                                        Margin="0,12,0,5"
+                                        FontSize="27"
+                                        FontWeight="SemiBold"
+                                        Text="—" />
+                                    <TextBlock
+                                        FontSize="11"
+                                        Foreground="#7F91AA"
+                                        Text="Kayıtlar tarandığında gösterilecek"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </Border>
-                            <Border Style="{StaticResource PanelStyle}" Padding="19" Margin="6,0">
+                            <Border
+                                Margin="6,0"
+                                Padding="19"
+                                Style="{StaticResource PanelStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="SON OLUŞTURULAN" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondary}"/>
-                                    <TextBlock Text="—" FontSize="27" FontWeight="SemiBold" Margin="0,12,0,5"/>
-                                    <TextBlock Text="Henüz talep kaydı yok" FontSize="11" Foreground="#7F91AA" TextWrapping="Wrap"/>
+                                    <TextBlock
+                                        FontSize="10"
+                                        FontWeight="Bold"
+                                        Foreground="{StaticResource TextSecondary}"
+                                        Text="SON OLUŞTURULAN" />
+                                    <TextBlock
+                                        Margin="0,12,0,5"
+                                        FontSize="27"
+                                        FontWeight="SemiBold"
+                                        Text="—" />
+                                    <TextBlock
+                                        FontSize="11"
+                                        Foreground="#7F91AA"
+                                        Text="Henüz talep kaydı yok"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </Border>
-                            <Border Style="{StaticResource PanelStyle}" Padding="19" Margin="12,0,0,0">
+                            <Border
+                                Margin="12,0,0,0"
+                                Padding="19"
+                                Style="{StaticResource PanelStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="MALZEME KATALOĞU" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextSecondary}"/>
-                                    <TextBlock Text="XML" FontSize="27" FontWeight="SemiBold" Margin="0,12,0,5"/>
-                                    <TextBlock Text="Merkezi katalog dosyası" FontSize="11" Foreground="#7F91AA" TextWrapping="Wrap"/>
+                                    <TextBlock
+                                        FontSize="10"
+                                        FontWeight="Bold"
+                                        Foreground="{StaticResource TextSecondary}"
+                                        Text="MALZEME KATALOĞU" />
+                                    <TextBlock
+                                        Margin="0,12,0,5"
+                                        FontSize="27"
+                                        FontWeight="SemiBold"
+                                        Text="XML" />
+                                    <TextBlock
+                                        FontSize="11"
+                                        Foreground="#7F91AA"
+                                        Text="Merkezi katalog dosyası"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </Border>
                         </UniformGrid>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.25*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1.25*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Border Style="{StaticResource PanelStyle}" Padding="22" Margin="0,0,12,0">
+                            <Border
+                                Margin="0,0,12,0"
+                                Padding="22"
+                                Style="{StaticResource PanelStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Hızlı işlemler" FontSize="15" FontWeight="SemiBold"/>
-                                    <TextBlock Text="Sık kullanılan işlemlere buradan ulaşın." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,5,0,18"/>
-                                    <Button Style="{StaticResource SecondaryButtonStyle}" HorizontalContentAlignment="Left" Click="NewRequestNav_Click" Margin="0,0,0,10">
+                                    <TextBlock
+                                        FontSize="15"
+                                        FontWeight="SemiBold"
+                                        Text="Hızlı işlemler" />
+                                    <TextBlock
+                                        Margin="0,5,0,18"
+                                        FontSize="12"
+                                        Foreground="{StaticResource TextSecondary}"
+                                        Text="Sık kullanılan işlemlere buradan ulaşın." />
+                                    <Button
+                                        Margin="0,0,0,10"
+                                        HorizontalContentAlignment="Left"
+                                        Click="NewRequestNav_Click"
+                                        Style="{StaticResource SecondaryButtonStyle}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Border Background="#3D3217" CornerRadius="7" Width="34" Height="34" Margin="0,0,12,0">
-                                                <TextBlock Text="＋" FontSize="20" Foreground="#C7D2FE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Border
+                                                Width="34"
+                                                Height="34"
+                                                Margin="0,0,12,0"
+                                                Background="#3D3217"
+                                                CornerRadius="7">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="20"
+                                                    Foreground="#C7D2FE"
+                                                    Text="＋" />
                                             </Border>
                                             <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Yeni talep oluştur" FontWeight="SemiBold"/>
-                                                <TextBlock Text="Malzemeleri seç ve miktarları gir" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,0"/>
+                                                <TextBlock FontWeight="SemiBold" Text="Yeni talep oluştur" />
+                                                <TextBlock
+                                                    Margin="0,3,0,0"
+                                                    FontSize="11"
+                                                    Foreground="{StaticResource TextSecondary}"
+                                                    Text="Malzemeleri seç ve miktarları gir" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Button>
-                                    <Button Style="{StaticResource SecondaryButtonStyle}" HorizontalContentAlignment="Left" Click="PreviousNav_Click">
+                                    <Button
+                                        HorizontalContentAlignment="Left"
+                                        Click="PreviousNav_Click"
+                                        Style="{StaticResource SecondaryButtonStyle}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Border Background="#1E4350" CornerRadius="7" Width="34" Height="34" Margin="0,0,12,0">
-                                                <TextBlock Text="▤" FontSize="17" Foreground="#6EE7B7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            <Border
+                                                Width="34"
+                                                Height="34"
+                                                Margin="0,0,12,0"
+                                                Background="#1E4350"
+                                                CornerRadius="7">
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="17"
+                                                    Foreground="#6EE7B7"
+                                                    Text="▤" />
                                             </Border>
                                             <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="Önceki talepleri aç" FontWeight="SemiBold"/>
-                                                <TextBlock Text="Kayıtlı Excel listelerine göz at" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,0"/>
+                                                <TextBlock FontWeight="SemiBold" Text="Önceki talepleri aç" />
+                                                <TextBlock
+                                                    Margin="0,3,0,0"
+                                                    FontSize="11"
+                                                    Foreground="{StaticResource TextSecondary}"
+                                                    Text="Kayıtlı Excel listelerine göz at" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
                             </Border>
-                            <Border Grid.Column="1" Style="{StaticResource PanelStyle}" Padding="22" Margin="12,0,0,0">
+                            <Border
+                                Grid.Column="1"
+                                Margin="12,0,0,0"
+                                Padding="22"
+                                Style="{StaticResource PanelStyle}">
                                 <StackPanel>
-                                    <TextBlock Text="Başlarken" FontSize="15" FontWeight="SemiBold"/>
-                                    <TextBlock Text="İş akışı" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,5,0,18"/>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                        <Border Width="27" Height="27" Background="#26345A" CornerRadius="8">
-                                            <TextBlock Text="1" Foreground="#C7D2FE" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                    <TextBlock
+                                        FontSize="15"
+                                        FontWeight="SemiBold"
+                                        Text="Başlarken" />
+                                    <TextBlock
+                                        Margin="0,5,0,18"
+                                        FontSize="11"
+                                        Foreground="{StaticResource TextSecondary}"
+                                        Text="İş akışı" />
+                                    <StackPanel Margin="0,0,0,15" Orientation="Horizontal">
+                                        <Border
+                                            Width="27"
+                                            Height="27"
+                                            Background="#26345A"
+                                            CornerRadius="8">
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Foreground="#C7D2FE"
+                                                Text="1" />
                                         </Border>
                                         <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="Talep oluştur" FontSize="12" FontWeight="SemiBold"/>
-                                            <TextBlock Text="Yeni bir liste başlat." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,0"/>
+                                            <TextBlock
+                                                FontSize="12"
+                                                FontWeight="SemiBold"
+                                                Text="Talep oluştur" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                FontSize="11"
+                                                Foreground="{StaticResource TextSecondary}"
+                                                Text="Yeni bir liste başlat." />
                                         </StackPanel>
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                        <Border Width="27" Height="27" Background="#26345A" CornerRadius="8">
-                                            <TextBlock Text="2" Foreground="#C7D2FE" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                    <StackPanel Margin="0,0,0,15" Orientation="Horizontal">
+                                        <Border
+                                            Width="27"
+                                            Height="27"
+                                            Background="#26345A"
+                                            CornerRadius="8">
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Foreground="#C7D2FE"
+                                                Text="2" />
                                         </Border>
                                         <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="Malzemeleri ekle" FontSize="12" FontWeight="SemiBold"/>
-                                            <TextBlock Text="Katalogdan ürün ve miktar seç." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,0"/>
+                                            <TextBlock
+                                                FontSize="12"
+                                                FontWeight="SemiBold"
+                                                Text="Malzemeleri ekle" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                FontSize="11"
+                                                Foreground="{StaticResource TextSecondary}"
+                                                Text="Katalogdan ürün ve miktar seç." />
                                         </StackPanel>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Border Width="27" Height="27" Background="#26345A" CornerRadius="8">
-                                            <TextBlock Text="3" Foreground="#C7D2FE" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+                                        <Border
+                                            Width="27"
+                                            Height="27"
+                                            Background="#26345A"
+                                            CornerRadius="8">
+                                            <TextBlock
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Foreground="#C7D2FE"
+                                                Text="3" />
                                         </Border>
                                         <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
-                                            <TextBlock Text="Excel ve PDF çıktısı" FontSize="12" FontWeight="SemiBold"/>
-                                            <TextBlock Text="Listenizi kaydedip paylaş." FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,3,0,0"/>
+                                            <TextBlock
+                                                FontSize="12"
+                                                FontWeight="SemiBold"
+                                                Text="Excel ve PDF çıktısı" />
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                FontSize="11"
+                                                Foreground="{StaticResource TextSecondary}"
+                                                Text="Listenizi kaydedip paylaş." />
                                         </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
@@ -229,37 +562,251 @@
                     </StackPanel>
 
                     <StackPanel x:Name="NewRequestPanel" Visibility="Collapsed">
-                        <TextBlock Text="Yeni malzeme listesi" FontSize="23" FontWeight="Bold"/>
-                        <TextBlock Text="Katalogdan ürün seçin, miktarı belirleyin ve listeye ekleyin." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,6,0,20"/>
-                        <Border Style="{StaticResource PanelStyle}" Padding="22" Margin="0,0,0,18"><StackPanel>
-                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="1.2*"/><ColumnDefinition Width="2*"/><ColumnDefinition Width="0.7*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-                            <StackPanel Margin="0,0,12,0"><TextBlock Text="Kategori" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,7"/><ComboBox x:Name="CategoryCombo" Height="40" SelectionChanged="CategoryCombo_SelectionChanged" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></StackPanel>
-                            <StackPanel Grid.Column="1" Margin="0,0,12,0"><TextBlock Text="Malzeme / ürün" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,7"/><ComboBox x:Name="ProductCombo" Height="40" SelectionChanged="ProductCombo_SelectionChanged" DisplayMemberPath="DisplayName" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></StackPanel>
-                            <StackPanel Grid.Column="2" Margin="0,0,12,0"><TextBlock Text="Miktar" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,7"/><TextBox x:Name="QuantityTextBox" Text="1" Height="40" Padding="8" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></StackPanel>
-                            <Button Grid.Column="3" Style="{StaticResource PrimaryButtonStyle}" Click="AddItem_Click" Content="＋ Listeye Ekle" VerticalAlignment="Bottom" Height="40"/>
-                            </Grid><TextBlock x:Name="ProductDescriptionText" Text="Ürün seçildiğinde teknik açıklama burada görünür." Foreground="{StaticResource TextSecondary}" Margin="0,12,0,0"/>
-                        </StackPanel></Border>
-                        <Border Style="{StaticResource PanelStyle}" Padding="22"><StackPanel>
-                            <Grid Margin="0,0,0,16"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Talep listesi" FontSize="16" FontWeight="SemiBold"/><TextBlock x:Name="RequestCountText" Text="Henüz ürün eklenmedi" Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/></StackPanel><TextBox x:Name="RequestNameTextBox" Grid.Column="1" Width="230" Height="36" Text="Malzeme Talebi" Padding="8" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></Grid>
-                            <DataGrid x:Name="RequestGrid" MinHeight="240" MaxHeight="420" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Background="#111C30" Foreground="#E2E8F0" BorderBrush="#26354D" RowBackground="#111C30" AlternatingRowBackground="#152238" GridLinesVisibility="Horizontal"><DataGrid.Columns><DataGridTextColumn Header="Kategori" Binding="{Binding Category}" Width="1*"/><DataGridTextColumn Header="Marka / Model" Binding="{Binding DisplayName}" Width="1.8*"/><DataGridTextColumn Header="Teknik özellikler" Binding="{Binding Specifications}" Width="2*"/><DataGridTextColumn Header="Miktar" Binding="{Binding Quantity}" Width="0.7*"/><DataGridTextColumn Header="Birim" Binding="{Binding Unit}" Width="0.7*"/><DataGridTemplateColumn Header="" Width="80"><DataGridTemplateColumn.CellTemplate><DataTemplate><Button Content="Kaldır" Tag="{Binding}" Click="RemoveItem_Click" Background="#42212D" Foreground="#FCA5A5" BorderThickness="0" Padding="7,4"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn></DataGrid.Columns></DataGrid>
-                            <Grid Margin="0,18,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="StatusText" Text="Liste henüz kaydedilmedi." Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center"/><Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Click="SaveRequest_Click" Content="Excel'e Kaydet"/></Grid>
-                        </StackPanel></Border>
+                        <TextBlock
+                            FontSize="23"
+                            FontWeight="Bold"
+                            Text="Yeni malzeme listesi" />
+                        <TextBlock
+                            Margin="0,6,0,20"
+                            FontSize="12"
+                            Foreground="{StaticResource TextSecondary}"
+                            Text="Katalogdan ürün seçin, miktarı belirleyin ve listeye ekleyin." />
+                        <Border
+                            Margin="0,0,0,18"
+                            Padding="22"
+                            Style="{StaticResource PanelStyle}">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1.2*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="0.7*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Margin="0,0,12,0">
+                                        <TextBlock
+                                            Margin="0,0,0,7"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Kategori" />
+                                        <ComboBox
+                                            x:Name="CategoryCombo"
+                                            Height="40"
+                                            Background="#17243A"
+                                            BorderBrush="#33445F"
+                                            Foreground="#F1F5F9"
+                                            SelectionChanged="CategoryCombo_SelectionChanged" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                                        <TextBlock
+                                            Margin="0,0,0,7"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Malzeme / ürün" />
+                                        <ComboBox
+                                            x:Name="ProductCombo"
+                                            Height="40"
+                                            Background="#17243A"
+                                            BorderBrush="#33445F"
+                                            DisplayMemberPath="DisplayName"
+                                            Foreground="#F1F5F9"
+                                            SelectionChanged="ProductCombo_SelectionChanged" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Margin="0,0,12,0">
+                                        <TextBlock
+                                            Margin="0,0,0,7"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Miktar" />
+                                        <TextBox
+                                            x:Name="QuantityTextBox"
+                                            Height="40"
+                                            Padding="8"
+                                            Background="#17243A"
+                                            BorderBrush="#33445F"
+                                            Foreground="#F1F5F9"
+                                            Text="1" />
+                                    </StackPanel>
+                                    <Button
+                                        Grid.Column="3"
+                                        Height="40"
+                                        VerticalAlignment="Bottom"
+                                        Click="AddItem_Click"
+                                        Content="＋ Listeye Ekle"
+                                        Style="{StaticResource PrimaryButtonStyle}" />
+                                </Grid>
+                                <TextBlock
+                                    x:Name="ProductDescriptionText"
+                                    Margin="0,12,0,0"
+                                    Foreground="{StaticResource TextSecondary}"
+                                    Text="Ürün seçildiğinde teknik açıklama burada görünür." />
+                            </StackPanel>
+                        </Border>
+                        <Border Padding="22" Style="{StaticResource PanelStyle}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock
+                                            FontSize="16"
+                                            FontWeight="SemiBold"
+                                            Text="Talep listesi" />
+                                        <TextBlock
+                                            x:Name="RequestCountText"
+                                            Margin="0,5,0,0"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Henüz ürün eklenmedi" />
+                                    </StackPanel>
+                                    <TextBox
+                                        x:Name="RequestNameTextBox"
+                                        Grid.Column="1"
+                                        Width="230"
+                                        Height="36"
+                                        Padding="8"
+                                        Background="#17243A"
+                                        BorderBrush="#33445F"
+                                        Foreground="#F1F5F9"
+                                        Text="Malzeme Talebi" />
+                                </Grid>
+                                <DataGrid
+                                    x:Name="RequestGrid"
+                                    MinHeight="240"
+                                    MaxHeight="420"
+                                    AlternatingRowBackground="#152238"
+                                    AutoGenerateColumns="False"
+                                    Background="#111C30"
+                                    BorderBrush="#26354D"
+                                    CanUserAddRows="False"
+                                    Foreground="#E2E8F0"
+                                    GridLinesVisibility="Horizontal"
+                                    IsReadOnly="True"
+                                    RowBackground="#111C30">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding Category}"
+                                            Header="Kategori" />
+                                        <DataGridTextColumn
+                                            Width="1.8*"
+                                            Binding="{Binding DisplayName}"
+                                            Header="Marka / Model" />
+                                        <DataGridTextColumn
+                                            Width="2*"
+                                            Binding="{Binding Specifications}"
+                                            Header="Teknik özellikler" />
+                                        <DataGridTextColumn
+                                            Width="0.7*"
+                                            Binding="{Binding Quantity}"
+                                            Header="Miktar" />
+                                        <DataGridTextColumn
+                                            Width="0.7*"
+                                            Binding="{Binding Unit}"
+                                            Header="Birim" />
+                                        <DataGridTemplateColumn Width="80" Header="">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button
+                                                        Padding="7,4"
+                                                        Background="#42212D"
+                                                        BorderThickness="0"
+                                                        Click="RemoveItem_Click"
+                                                        Content="Kaldır"
+                                                        Foreground="#FCA5A5"
+                                                        Tag="{Binding}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Grid Margin="0,18,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="StatusText"
+                                        VerticalAlignment="Center"
+                                        Foreground="{StaticResource TextSecondary}"
+                                        Text="Liste henüz kaydedilmedi." />
+                                    <Button
+                                        Grid.Column="1"
+                                        Click="SaveRequest_Click"
+                                        Content="Excel'e Kaydet"
+                                        Style="{StaticResource PrimaryButtonStyle}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                     <StackPanel x:Name="PreviousPanel" Visibility="Collapsed">
-                        <Border Style="{StaticResource PanelStyle}" Padding="26"><StackPanel>
-                            <TextBlock Text="Önceki Talepler" FontSize="22" FontWeight="Bold"/>
-                            <TextBlock Text="Bir talebe çift tıklayarak yeniden açabilirsiniz." Foreground="{StaticResource TextSecondary}" Margin="0,6,0,18"/>
-                            <ListBox x:Name="PreviousList" MouseDoubleClick="PreviousList_MouseDoubleClick" MinHeight="260" Background="#111C30" Foreground="#E2E8F0" BorderBrush="#26354D" Padding="8"/>
-                        </StackPanel></Border>
+                        <Border Padding="26" Style="{StaticResource PanelStyle}">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="22"
+                                    FontWeight="Bold"
+                                    Text="Önceki Talepler" />
+                                <TextBlock
+                                    Margin="0,6,0,18"
+                                    Foreground="{StaticResource TextSecondary}"
+                                    Text="Bir talebe çift tıklayarak yeniden açabilirsiniz." />
+                                <ListBox
+                                    x:Name="PreviousList"
+                                    MinHeight="260"
+                                    Padding="8"
+                                    Background="#111C30"
+                                    BorderBrush="#26354D"
+                                    Foreground="#E2E8F0"
+                                    MouseDoubleClick="PreviousList_MouseDoubleClick" />
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                     <StackPanel x:Name="CatalogPanel" Visibility="Collapsed">
-                        <Border Style="{StaticResource PanelStyle}" Padding="26"><StackPanel>
-                            <TextBlock Text="Malzeme Kataloğu" FontSize="22" FontWeight="Bold"/>
-                            <TextBlock Text="Katalog dosyası Belgeler/DataMalzemeTalep/Data/catalog.xml konumundadır." TextWrapping="Wrap" Foreground="{StaticResource TextSecondary}" Margin="0,6,0,18"/>
-                            <DataGrid x:Name="CatalogGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" MinHeight="300" Background="#111C30" Foreground="#E2E8F0" BorderBrush="#26354D" RowBackground="#111C30" AlternatingRowBackground="#152238">
-                                <DataGrid.Columns><DataGridTextColumn Header="Kategori" Binding="{Binding Category}" Width="1*"/><DataGridTextColumn Header="Marka" Binding="{Binding Brand}" Width="1*"/><DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="1.3*"/><DataGridTextColumn Header="Teknik özellikler" Binding="{Binding Specifications}" Width="2*"/><DataGridTextColumn Header="Birim" Binding="{Binding Unit}" Width="0.7*"/></DataGrid.Columns>
-                            </DataGrid>
-                        </StackPanel></Border>
+                        <Border Padding="26" Style="{StaticResource PanelStyle}">
+                            <StackPanel>
+                                <TextBlock
+                                    FontSize="22"
+                                    FontWeight="Bold"
+                                    Text="Malzeme Kataloğu" />
+                                <TextBlock
+                                    Margin="0,6,0,18"
+                                    Foreground="{StaticResource TextSecondary}"
+                                    Text="Katalog dosyası Belgeler/DataMalzemeTalep/Data/catalog.xml konumundadır."
+                                    TextWrapping="Wrap" />
+                                <DataGrid
+                                    x:Name="CatalogGrid"
+                                    MinHeight="300"
+                                    AlternatingRowBackground="#152238"
+                                    AutoGenerateColumns="False"
+                                    Background="#111C30"
+                                    BorderBrush="#26354D"
+                                    CanUserAddRows="False"
+                                    Foreground="#E2E8F0"
+                                    IsReadOnly="True"
+                                    RowBackground="#111C30">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding Category}"
+                                            Header="Kategori" />
+                                        <DataGridTextColumn
+                                            Width="1*"
+                                            Binding="{Binding Brand}"
+                                            Header="Marka" />
+                                        <DataGridTextColumn
+                                            Width="1.3*"
+                                            Binding="{Binding Model}"
+                                            Header="Model" />
+                                        <DataGridTextColumn
+                                            Width="2*"
+                                            Binding="{Binding Specifications}"
+                                            Header="Teknik özellikler" />
+                                        <DataGridTextColumn
+                                            Width="0.7*"
+                                            Binding="{Binding Unit}"
+                                            Header="Birim" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
