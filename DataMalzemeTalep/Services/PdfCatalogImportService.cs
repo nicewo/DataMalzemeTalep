@@ -141,8 +141,8 @@ public sealed class PdfCatalogImportService
         value.ToUpperInvariant().Replace('İ', 'I').Replace('Ş', 'S').Replace('Ğ', 'G')
             .Replace('Ü', 'U').Replace('Ö', 'O').Replace('Ç', 'C');
 
-    private static string Clean(string value) =>
-        Regex.Replace(value.Replace("\u00A0", " "), @"\s+", " ").Trim().Trim('|', ':', ';');
+    private static string Clean(string? value) =>
+        Regex.Replace((value ?? string.Empty).Replace("\u00A0", " "), @"\s+", " ").Trim().Trim('|', ':', ';');
 
     private static bool IsFooterOrNote(string brand, string model, string description)
     {
