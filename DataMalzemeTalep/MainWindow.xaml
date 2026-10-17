@@ -8,11 +8,11 @@
     Height="900"
     MinWidth="820"
     MinHeight="560"
-    SizeChanged="MainWindow_SizeChanged"
     Background="{StaticResource AppBackground}"
     FontFamily="Segoe UI"
     Foreground="{StaticResource TextPrimary}"
     ResizeMode="CanResize"
+    SizeChanged="MainWindow_SizeChanged"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None">
     <shell:WindowChrome.WindowChrome>
