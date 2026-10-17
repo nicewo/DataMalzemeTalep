@@ -446,6 +446,23 @@ public partial class MainWindow : Window
 
         if (TotalRequestsText is not null)
             TotalRequestsText.Text = files.Count.ToString();
+
+        if (LastCreatedNameText is not null && LastCreatedDateText is not null)
+        {
+            if (files.Count > 0)
+            {
+                var latestPath = files[0];
+                LastCreatedNameText.Text = Path.GetFileNameWithoutExtension(latestPath);
+                LastCreatedDateText.Text = File.GetLastWriteTime(latestPath).ToString("dd.MM.yyyy HH:mm");
+                LastCreatedCard.ToolTip = latestPath;
+            }
+            else
+            {
+                LastCreatedNameText.Text = "—";
+                LastCreatedDateText.Text = "Henüz liste kaydı yok";
+                LastCreatedCard.ToolTip = null;
+            }
+        }
     }
 
     private void PreviousList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
