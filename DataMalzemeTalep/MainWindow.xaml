@@ -126,8 +126,8 @@
                 <StackPanel DockPanel.Dock="Top">
                     <StackPanel Margin="5,4,0,34" Orientation="Horizontal">
                         <Image
-                            Width="40"
-                            Height="40"
+                            Width="90"
+                            Height="89"
                             VerticalAlignment="Center"
                             Source="/Altın Devreli Veri Otomasyonu İkonu.png" />
 
