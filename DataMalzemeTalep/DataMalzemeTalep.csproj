@@ -9,4 +9,5 @@
   </PropertyGroup>
 
   <ItemGroup><PackageReference Include="ClosedXML" Version="0.105.0" /></ItemGroup>
+  <ItemGroup><Content Include="Data\catalog.xml" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
 </Project>
