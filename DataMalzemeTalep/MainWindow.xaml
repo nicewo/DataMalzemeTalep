@@ -805,11 +805,12 @@
                                 <TextBlock Margin="0,6,0,16" Foreground="{StaticResource TextSecondary}" Text="Ürün ekleyin, hücrelere tıklayarak bilgileri düzenleyin veya seçili ürünü silin. Değişiklikler catalog.xml dosyasına kaydedilir." TextWrapping="Wrap" />
                                 <WrapPanel Margin="0,0,0,14">
                                     <Button Margin="0,0,8,0" Padding="14,8" Click="AddCatalogItem_Click" Content="+ Yeni Ürün" Style="{StaticResource PrimaryButtonStyle}" />
-                                    <Button Margin="0,0,8,0" Padding="14,8" Click="DeleteCatalogItem_Click" Content="Seçili Ürünü Sil" />
+                                    <Button Margin="0,0,8,0" Padding="14,8" Click="DeleteCatalogItem_Click" Content="Seçili Ürünü Sil" Style="{StaticResource SecondaryButtonStyle}" />
                                     <Button Padding="14,8" Click="SaveCatalog_Click" Content="Kataloğu Kaydet" Style="{StaticResource PrimaryButtonStyle}" />
                                 </WrapPanel>
                                 <DataGrid
                                     x:Name="CatalogGrid"
+                                    PreviewMouseWheel="CatalogGrid_PreviewMouseWheel"
                                     MinHeight="300"
                                     AlternatingRowBackground="#152238"
                                     AutoGenerateColumns="False"
