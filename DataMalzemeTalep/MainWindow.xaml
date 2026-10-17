@@ -598,58 +598,28 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1.2*" />
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="0.7*" />
+                                        <ColumnDefinition Width="1.1*" />
+                                        <ColumnDefinition Width="1.4*" />
+                                        <ColumnDefinition Width="0.55*" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Margin="0,0,12,0">
-                                        <TextBlock
-                                            Margin="0,0,0,7"
-                                            Foreground="{StaticResource TextSecondary}"
-                                            Text="Kategori" />
-                                        <ComboBox
-                                            x:Name="CategoryCombo"
-                                            Height="40"
-                                            Background="#17243A"
-                                            BorderBrush="#33445F"
-                                            Foreground="#F1F5F9"
-                                            SelectionChanged="CategoryCombo_SelectionChanged" />
+                                    <StackPanel Margin="0,0,10,0">
+                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Kategori" />
+                                        <ComboBox x:Name="CategoryCombo" Height="40" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" SelectionChanged="CategoryCombo_SelectionChanged" />
                                     </StackPanel>
-                                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
-                                        <TextBlock
-                                            Margin="0,0,0,7"
-                                            Foreground="{StaticResource TextSecondary}"
-                                            Text="Malzeme / ürün" />
-                                        <ComboBox
-                                            x:Name="ProductCombo"
-                                            Height="40"
-                                            Background="#17243A"
-                                            BorderBrush="#33445F"
-                                            DisplayMemberPath="DisplayName"
-                                            Foreground="#F1F5F9"
-                                            SelectionChanged="ProductCombo_SelectionChanged" />
+                                    <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Marka" />
+                                        <ComboBox x:Name="BrandCombo" Height="40" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" SelectionChanged="BrandCombo_SelectionChanged" />
                                     </StackPanel>
-                                    <StackPanel Grid.Column="2" Margin="0,0,12,0">
-                                        <TextBlock
-                                            Margin="0,0,0,7"
-                                            Foreground="{StaticResource TextSecondary}"
-                                            Text="Miktar" />
-                                        <TextBox
-                                            x:Name="QuantityTextBox"
-                                            Height="40"
-                                            Padding="8"
-                                            Background="#17243A"
-                                            BorderBrush="#33445F"
-                                            Foreground="#F1F5F9"
-                                            Text="1" />
+                                    <StackPanel Grid.Column="2" Margin="0,0,10,0">
+                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Model" />
+                                        <ComboBox x:Name="ProductCombo" Height="40" Background="#17243A" BorderBrush="#33445F" DisplayMemberPath="Model" Foreground="#F1F5F9" SelectionChanged="ProductCombo_SelectionChanged" />
                                     </StackPanel>
-                                    <Button
-                                        Grid.Column="3"
-                                        Height="40"
-                                        VerticalAlignment="Bottom"
-                                        Click="AddItem_Click"
-                                        Content="＋ Listeye Ekle"
-                                        Style="{StaticResource PrimaryButtonStyle}" />
+                                    <StackPanel Grid.Column="3" Margin="0,0,10,0">
+                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Miktar" />
+                                        <TextBox x:Name="QuantityTextBox" Height="40" Padding="8" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" Text="1" />
+                                    </StackPanel>
+                                    <Button Grid.Column="4" Height="40" VerticalAlignment="Bottom" Click="AddItem_Click" Content="＋ Listeye Ekle" Style="{StaticResource PrimaryButtonStyle}" />
                                 </Grid>
                                 <TextBlock
                                     x:Name="ProductDescriptionText"
