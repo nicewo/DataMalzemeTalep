@@ -42,6 +42,43 @@ public partial class MainWindow : Window
         UpdateCount();
     }
 
+    private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        var compact = ActualWidth < 1080;
+        var narrow = ActualWidth < 900;
+
+        DashboardArtColumn.Width = compact ? new GridLength(0) : new GridLength(150);
+        DashboardHeroArt.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
+        DashboardStatsGrid.Columns = narrow ? 1 : (compact ? 2 : 3);
+
+        if (compact)
+        {
+            QuickActionsColumn.Width = new GridLength(1, GridUnitType.Star);
+            GettingStartedColumn.Width = new GridLength(1, GridUnitType.Star);
+            QuickActionsCard.SetValue(Grid.RowProperty, 0);
+            QuickActionsCard.SetValue(Grid.ColumnProperty, 0);
+            GettingStartedCard.SetValue(Grid.RowProperty, 1);
+            GettingStartedCard.SetValue(Grid.ColumnProperty, 0);
+            QuickActionsCard.Margin = new Thickness(0, 0, 0, 12);
+            GettingStartedCard.Margin = new Thickness(0);
+            QuickActionsRow.Height = GridLength.Auto;
+            GettingStartedRow.Height = GridLength.Auto;
+        }
+        else
+        {
+            QuickActionsColumn.Width = new GridLength(1.25, GridUnitType.Star);
+            GettingStartedColumn.Width = new GridLength(1, GridUnitType.Star);
+            QuickActionsCard.SetValue(Grid.RowProperty, 0);
+            QuickActionsCard.SetValue(Grid.ColumnProperty, 0);
+            GettingStartedCard.SetValue(Grid.RowProperty, 0);
+            GettingStartedCard.SetValue(Grid.ColumnProperty, 1);
+            QuickActionsCard.Margin = new Thickness(0, 0, 12, 0);
+            GettingStartedCard.Margin = new Thickness(12, 0, 0, 0);
+            QuickActionsRow.Height = new GridLength(1, GridUnitType.Star);
+            GettingStartedRow.Height = new GridLength(1, GridUnitType.Star);
+        }
+    }
+
     private void MinimizeWindow_Click(object sender, RoutedEventArgs e)
     {
         WindowState = WindowState.Minimized;
