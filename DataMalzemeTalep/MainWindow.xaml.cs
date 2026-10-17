@@ -21,6 +21,9 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         RequestGrid.ItemsSource = _items;
+        CatalogGrid.AddHandler(Mouse.PreviewMouseWheelEvent,
+            new MouseWheelEventHandler(CatalogGrid_PreviewMouseWheel), true);
+
 
         try
         {
