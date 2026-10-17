@@ -56,7 +56,7 @@ public sealed class DataService
         using var workbook = new XLWorkbook();
         var sheet = workbook.Worksheets.Add("Sayfa1");
         sheet.Style.Font.FontName = "Calibri";
-        sheet.PageSetup.PaperSize = XLPaperSize.A4;
+        sheet.PageSetup.PaperSize = (XLPaperSize)9;
         sheet.PageSetup.PageOrientation = XLPageOrientation.Portrait;
         sheet.PageSetup.Margins.Top = 0.35;
         sheet.PageSetup.Margins.Bottom = 0.35;
@@ -166,7 +166,7 @@ public sealed class DataService
             }
         }
 
-        sheet.SheetView.ShowGridLines = false;
+        sheet.ShowGridLines = false;
         workbook.SaveAs(path);
         return path;
     }
