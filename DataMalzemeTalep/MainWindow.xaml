@@ -246,15 +246,20 @@
                         </StackPanel></Border>
                     </StackPanel>
                     <StackPanel x:Name="PreviousPanel" Visibility="Collapsed">
-                        <Border Style="{StaticResource PanelStyle}" Padding="26">
-                            <TextBlock Text="Kayıtlı talepler alanı sonraki adımda eklenecek." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
-                        </Border>
+                        <Border Style="{StaticResource PanelStyle}" Padding="26"><StackPanel>
+                            <TextBlock Text="Önceki Talepler" FontSize="22" FontWeight="Bold"/>
+                            <TextBlock Text="Bir talebe çift tıklayarak yeniden açabilirsiniz." Foreground="{StaticResource TextSecondary}" Margin="0,6,0,18"/>
+                            <ListBox x:Name="PreviousList" MouseDoubleClick="PreviousList_MouseDoubleClick" MinHeight="260" Background="#111C30" Foreground="#E2E8F0" BorderBrush="#26354D" Padding="8"/>
+                        </StackPanel></Border>
                     </StackPanel>
-
                     <StackPanel x:Name="CatalogPanel" Visibility="Collapsed">
-                        <Border Style="{StaticResource PanelStyle}" Padding="26">
-                            <TextBlock Text="XML malzeme kataloğu yönetimi sonraki adımda eklenecek." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
-                        </Border>
+                        <Border Style="{StaticResource PanelStyle}" Padding="26"><StackPanel>
+                            <TextBlock Text="Malzeme Kataloğu" FontSize="22" FontWeight="Bold"/>
+                            <TextBlock Text="Katalog dosyası Belgeler/DataMalzemeTalep/Data/catalog.xml konumundadır." TextWrapping="Wrap" Foreground="{StaticResource TextSecondary}" Margin="0,6,0,18"/>
+                            <DataGrid x:Name="CatalogGrid" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" MinHeight="300" Background="#111C30" Foreground="#E2E8F0" BorderBrush="#26354D" RowBackground="#111C30" AlternatingRowBackground="#152238">
+                                <DataGrid.Columns><DataGridTextColumn Header="Kategori" Binding="{Binding Category}" Width="1*"/><DataGridTextColumn Header="Marka" Binding="{Binding Brand}" Width="1*"/><DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="1.3*"/><DataGridTextColumn Header="Teknik özellikler" Binding="{Binding Specifications}" Width="2*"/><DataGridTextColumn Header="Birim" Binding="{Binding Unit}" Width="0.7*"/></DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel></Border>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
