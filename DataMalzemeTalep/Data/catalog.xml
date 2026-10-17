@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><Catalog>
+<Material Id="plc"><Category>PLC ve Otomasyon</Category><Brand>Siemens</Brand><Model>S7-1200 CPU 1214C</Model><Specifications>DC/DC/DC, 14 DI / 10 DO</Specifications><Description>Kompakt PLC kontrolörü</Description><Unit>Adet</Unit></Material>
+<Material Id="hmi"><Category>PLC ve Otomasyon</Category><Brand>Siemens</Brand><Model>KTP700 Basic</Model><Specifications>7 inç HMI, Basic Panel</Specifications><Description>Operatör paneli</Description><Unit>Adet</Unit></Material>
+<Material Id="contactor"><Category>Elektrik Malzemeleri</Category><Brand>Schneider Electric</Brand><Model>LC1D09</Model><Specifications>9 A kontaktör, 3 kutup</Specifications><Description>Motor kontaktörü</Description><Unit>Adet</Unit></Material>
+<Material Id="terminal"><Category>Elektrik Malzemeleri</Category><Brand>Phoenix Contact</Brand><Model>UK 5 N</Model><Specifications>2.5 mm² klemens</Specifications><Description>Geçiş klemensi</Description><Unit>Adet</Unit></Material>
+<Material Id="sensor"><Category>Sensörler</Category><Brand>SICK</Brand><Model>W4</Model><Specifications>Fotoelektrik sensör</Specifications><Description>Optik sensör</Description><Unit>Adet</Unit></Material>
+<Material Id="cable"><Category>Kablolar</Category><Brand>LAPP</Brand><Model>ÖLFLEX CLASSIC 110</Model><Specifications>4G1.5 mm²</Specifications><Description>Kontrol kablosu</Description><Unit>Metre</Unit></Material></Catalog>
