@@ -6,8 +6,16 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Altın-Devreli-Veri-Otomasyonu-İkonu.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Altın Devreli Veri Otomasyonu İkonu.png" />
+  </ItemGroup>
+
   <ItemGroup><PackageReference Include="ClosedXML" Version="0.105.0" /></ItemGroup>
-  <ItemGroup><Content Include="Data\catalog.xml" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><Content Include="Altın-Devreli-Veri-Otomasyonu-İkonu.ico" /><Content Include="Data\catalog.xml" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup>
+    <Resource Include="Altın Devreli Veri Otomasyonu İkonu.png" />
+  </ItemGroup>
 </Project>

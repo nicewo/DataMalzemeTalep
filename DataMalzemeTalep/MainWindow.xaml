@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
     Title="DATA OTOMASYON · Malzeme Liste"
-    WindowStyle="None"
-    ResizeMode="CanResize"
     Width="1440"
     Height="900"
     MinWidth="1120"
@@ -13,9 +11,15 @@
     Background="{StaticResource AppBackground}"
     FontFamily="Segoe UI"
     Foreground="{StaticResource TextPrimary}"
-    WindowStartupLocation="CenterScreen">
+    ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None">
     <shell:WindowChrome.WindowChrome>
-        <shell:WindowChrome CaptionHeight="42" ResizeBorderThickness="6" GlassFrameThickness="0" UseAeroCaptionButtons="False" />
+        <shell:WindowChrome
+            CaptionHeight="42"
+            GlassFrameThickness="0"
+            ResizeBorderThickness="6"
+            UseAeroCaptionButtons="False" />
     </shell:WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
@@ -27,7 +31,12 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#0A1020" BorderBrush="#26354D" BorderThickness="0,0,0,1">
+        <Border
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Background="#0A1020"
+            BorderBrush="#26354D"
+            BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -36,16 +45,58 @@
                     <ColumnDefinition Width="46" />
                     <ColumnDefinition Width="46" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0" shell:WindowChrome.IsHitTestVisibleInChrome="True">
-                    <Border Width="25" Height="25" CornerRadius="7" BorderBrush="#D9A514" BorderThickness="1" Background="#111827">
-                        <TextBlock Text="D" Foreground="#D9A514" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <TextBlock Text="DATA OTOMASYON" Margin="9,0,0,0" VerticalAlignment="Center" Foreground="#D9A514" FontSize="11" FontWeight="Bold" />
-                    <TextBlock Text="  ·  Malzeme Liste" VerticalAlignment="Center" Foreground="#D5DEEC" FontSize="12" />
+                <StackPanel
+                    Grid.Column="0"
+                    Margin="14,0,0,0"
+                    VerticalAlignment="Center"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                    Orientation="Horizontal">
+                    <Image
+                        Width="25"
+                        Height="25"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Source="/Altın Devreli Veri Otomasyonu İkonu.png" />
+                    <TextBlock
+                        Margin="9,0,0,0"
+                        VerticalAlignment="Center"
+                        FontSize="11"
+                        FontWeight="Bold"
+                        Foreground="#D9A514"
+                        Text="DATA OTOMASYON" />
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        Foreground="#D5DEEC"
+                        Text="  ·  Malzeme Liste" />
                 </StackPanel>
-                <Button Grid.Column="2" Content="—" Click="MinimizeWindow_Click" Background="Transparent" Foreground="#CBD5E1" BorderThickness="0" FontSize="16" shell:WindowChrome.IsHitTestVisibleInChrome="True" />
-                <Button Grid.Column="3" Content="□" Click="MaximizeWindow_Click" Background="Transparent" Foreground="#CBD5E1" BorderThickness="0" FontSize="13" shell:WindowChrome.IsHitTestVisibleInChrome="True" />
-                <Button Grid.Column="4" Content="×" Click="CloseWindow_Click" Background="Transparent" Foreground="#CBD5E1" BorderThickness="0" FontSize="18" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                <Button
+                    Grid.Column="2"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="MinimizeWindow_Click"
+                    Content="—"
+                    FontSize="16"
+                    Foreground="#CBD5E1" />
+                <Button
+                    Grid.Column="3"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="MaximizeWindow_Click"
+                    Content="□"
+                    FontSize="13"
+                    Foreground="#CBD5E1" />
+                <Button
+                    Grid.Column="4"
+                    shell:WindowChrome.IsHitTestVisibleInChrome="True"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Click="CloseWindow_Click"
+                    Content="×"
+                    FontSize="18"
+                    Foreground="#CBD5E1">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Background" Value="Transparent" />
@@ -73,22 +124,12 @@
             <DockPanel Margin="18,22,18,18">
                 <StackPanel DockPanel.Dock="Top">
                     <StackPanel Margin="5,4,0,34" Orientation="Horizontal">
-                        <Border
+                        <Image
                             Width="40"
                             Height="40"
                             VerticalAlignment="Center"
-                            Background="#111111"
-                            BorderBrush="#D9A514"
-                            BorderThickness="1"
-                            CornerRadius="12">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="22"
-                                FontWeight="Bold"
-                                Foreground="#D9A514"
-                                Text="D" />
-                        </Border>
+                            Source="/Altın Devreli Veri Otomasyonu İkonu.png" />
+
                         <StackPanel Margin="11,1,0,0" VerticalAlignment="Center">
                             <TextBlock
                                 FontSize="11"
@@ -217,9 +258,9 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Foreground="#D5E2F2"
+                            MouseDoubleClick="SidebarSavedLists_MouseDoubleClick"
                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            MouseDoubleClick="SidebarSavedLists_MouseDoubleClick">
+                            ScrollViewer.VerticalScrollBarVisibility="Auto">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Padding" Value="7,8" />
@@ -230,7 +271,11 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                                <Border x:Name="ItemBorder" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                                                <Border
+                                                    x:Name="ItemBorder"
+                                                    Padding="{TemplateBinding Padding}"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="5">
                                                     <ContentPresenter />
                                                 </Border>
                                                 <ControlTemplate.Triggers>
@@ -249,8 +294,16 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Name}" FontSize="11" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
-                                        <TextBlock Text="{Binding ModifiedText}" FontSize="9" Foreground="#8192AA" Margin="0,3,0,0" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            FontWeight="SemiBold"
+                                            Text="{Binding Name}"
+                                            TextTrimming="CharacterEllipsis" />
+                                        <TextBlock
+                                            Margin="0,3,0,0"
+                                            FontSize="9"
+                                            Foreground="#8192AA"
+                                            Text="{Binding ModifiedText}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -261,7 +314,10 @@
         </Border>
 
         <!--  Main area  -->
-        <Grid Grid.Row="1" Grid.Column="1" Background="{StaticResource AppBackground}">
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1"
+            Background="{StaticResource AppBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="76" />
                 <RowDefinition Height="*" />
@@ -292,10 +348,10 @@
                     </StackPanel>
                     <Button
                         Grid.Column="1"
-                        Visibility="Collapsed"
                         VerticalAlignment="Center"
                         Click="ExportPdf_Click"
-                        Style="{StaticResource PrimaryButtonStyle}">
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Visibility="Collapsed">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock
                                 Margin="0,0,9,0"
@@ -348,7 +404,7 @@
                                         FontSize="28"
                                         FontWeight="Bold"
                                         Foreground="#F8FAFC"
-                                        Text="listelerinizi kolayca yönetin."
+                                        Text="Listelerinizi kolayca yönetin."
                                         TextWrapping="Wrap" />
                                     <TextBlock
                                         Margin="0,10,0,22"
@@ -429,10 +485,10 @@
                                         Foreground="{StaticResource TextSecondary}"
                                         Text="TOPLAM liste" />
                                     <TextBlock
+                                        x:Name="TotalRequestsText"
                                         Margin="0,12,0,5"
                                         FontSize="27"
                                         FontWeight="SemiBold"
-                                        x:Name="TotalRequestsText"
                                         Text="0" />
                                     <TextBlock
                                         FontSize="11"
@@ -474,10 +530,10 @@
                                         Foreground="{StaticResource TextSecondary}"
                                         Text="MALZEME KATALOĞU" />
                                     <TextBlock
+                                        x:Name="CatalogCountText"
                                         Margin="0,12,0,5"
                                         FontSize="27"
                                         FontWeight="SemiBold"
-                                        x:Name="CatalogCountText"
                                         Text="0" />
                                     <TextBlock
                                         FontSize="11"
@@ -668,12 +724,26 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <StackPanel>
-                                <TextBlock x:Name="CurrentListTitle" FontSize="22" FontWeight="Bold" Text="Liste düzenleme" />
-                                <TextBlock Margin="0,5,0,0" Foreground="{StaticResource TextSecondary}" Text="Değişiklikler açık olan Excel listesine kaydedilir." />
+                                <TextBlock
+                                    x:Name="CurrentListTitle"
+                                    FontSize="22"
+                                    FontWeight="Bold"
+                                    Text="Liste düzenleme" />
+                                <TextBlock
+                                    Margin="0,5,0,0"
+                                    Foreground="{StaticResource TextSecondary}"
+                                    Text="Değişiklikler açık olan Excel listesine kaydedilir." />
                             </StackPanel>
-                            <Button Grid.Column="1" VerticalAlignment="Center" Click="ExportPdf_Click" Style="{StaticResource PrimaryButtonStyle}">
+                            <Button
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Click="ExportPdf_Click"
+                                Style="{StaticResource PrimaryButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Margin="0,0,9,0" FontSize="16" Text="↓" />
+                                    <TextBlock
+                                        Margin="0,0,9,0"
+                                        FontSize="16"
+                                        Text="↓" />
                                     <TextBlock VerticalAlignment="Center" Text="PDF Çıkar" />
                                 </StackPanel>
                             </Button>
@@ -701,33 +771,91 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Margin="0,0,10,0">
-                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Kategori" />
-                                        <ComboBox x:Name="CategoryCombo" Height="40" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" SelectionChanged="CategoryCombo_SelectionChanged" />
+                                        <TextBlock
+                                            Margin="0,0,0,7"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Kategori" />
+                                        <ComboBox
+                                            x:Name="CategoryCombo"
+                                            Height="40"
+                                            Background="#17243A"
+                                            BorderBrush="#33445F"
+                                            Foreground="#F1F5F9"
+                                            SelectionChanged="CategoryCombo_SelectionChanged" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="0,0,10,0">
-                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Marka" />
-                                        <ComboBox x:Name="BrandCombo" Height="40" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" SelectionChanged="BrandCombo_SelectionChanged" />
+                                        <TextBlock
+                                            Margin="0,0,0,7"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Marka" />
+                                        <ComboBox
+                                            x:Name="BrandCombo"
+                                            Height="40"
+                                            Background="#17243A"
+                                            BorderBrush="#33445F"
+                                            Foreground="#F1F5F9"
+                                            SelectionChanged="BrandCombo_SelectionChanged" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Margin="0,0,10,0">
-                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Model" />
-                                        <ComboBox x:Name="ProductCombo" Height="40" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" SelectionChanged="ProductCombo_SelectionChanged">
+                                        <TextBlock
+                                            Margin="0,0,0,7"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Model" />
+                                        <ComboBox
+                                            x:Name="ProductCombo"
+                                            Height="40"
+                                            Background="#17243A"
+                                            BorderBrush="#33445F"
+                                            Foreground="#F1F5F9"
+                                            SelectionChanged="ProductCombo_SelectionChanged">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Model}" Foreground="#F1F5F9" VerticalAlignment="Center" />
-                                                        <TextBlock Text=" (" Foreground="#94A3B8" FontSize="10" VerticalAlignment="Center" />
-                                                        <TextBlock Text="{Binding Specifications}" Foreground="#94A3B8" FontSize="10" VerticalAlignment="Center" />
-                                                        <TextBlock Text=")" Foreground="#94A3B8" FontSize="10" VerticalAlignment="Center" />
+                                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                                        <TextBlock
+                                                            VerticalAlignment="Center"
+                                                            Foreground="#F1F5F9"
+                                                            Text="{Binding Model}" />
+                                                        <TextBlock
+                                                            VerticalAlignment="Center"
+                                                            FontSize="10"
+                                                            Foreground="#94A3B8"
+                                                            Text=" (" />
+                                                        <TextBlock
+                                                            VerticalAlignment="Center"
+                                                            FontSize="10"
+                                                            Foreground="#94A3B8"
+                                                            Text="{Binding Specifications}" />
+                                                        <TextBlock
+                                                            VerticalAlignment="Center"
+                                                            FontSize="10"
+                                                            Foreground="#94A3B8"
+                                                            Text=")" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
                                     </StackPanel>
                                     <StackPanel Grid.Column="3" Margin="0,0,10,0">
-                                        <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Miktar" />
-                                        <TextBox x:Name="QuantityTextBox" Height="40" Padding="8" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" Text="1" />
+                                        <TextBlock
+                                            Margin="0,0,0,7"
+                                            Foreground="{StaticResource TextSecondary}"
+                                            Text="Miktar" />
+                                        <TextBox
+                                            x:Name="QuantityTextBox"
+                                            Height="40"
+                                            Padding="8"
+                                            Background="#17243A"
+                                            BorderBrush="#33445F"
+                                            Foreground="#F1F5F9"
+                                            Text="1" />
                                     </StackPanel>
-                                    <Button Grid.Column="4" Height="40" VerticalAlignment="Bottom" Click="AddItem_Click" Content="＋ Listeye Ekle" Style="{StaticResource PrimaryButtonStyle}" />
+                                    <Button
+                                        Grid.Column="4"
+                                        Height="40"
+                                        VerticalAlignment="Bottom"
+                                        Click="AddItem_Click"
+                                        Content="＋ Listeye Ekle"
+                                        Style="{StaticResource PrimaryButtonStyle}" />
                                 </Grid>
                                 <TextBlock
                                     x:Name="ProductDescriptionText"
@@ -779,12 +907,30 @@
                                     IsReadOnly="True"
                                     RowBackground="#111C30">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Width="1.1*" Binding="{Binding Category}" Header="Kategori" />
-                                        <DataGridTextColumn Width="0.9*" Binding="{Binding Brand}" Header="Marka" />
-                                        <DataGridTextColumn Width="1.1*" Binding="{Binding Model}" Header="Model" />
-                                        <DataGridTextColumn Width="2*" Binding="{Binding Specifications}" Header="Açıklama / Teknik Özellik" />
-                                        <DataGridTextColumn Width="0.65*" Binding="{Binding Quantity}" Header="Miktar" />
-                                        <DataGridTextColumn Width="0.65*" Binding="{Binding Unit}" Header="Birim" />
+                                        <DataGridTextColumn
+                                            Width="1.1*"
+                                            Binding="{Binding Category}"
+                                            Header="Kategori" />
+                                        <DataGridTextColumn
+                                            Width="0.9*"
+                                            Binding="{Binding Brand}"
+                                            Header="Marka" />
+                                        <DataGridTextColumn
+                                            Width="1.1*"
+                                            Binding="{Binding Model}"
+                                            Header="Model" />
+                                        <DataGridTextColumn
+                                            Width="2*"
+                                            Binding="{Binding Specifications}"
+                                            Header="Açıklama / Teknik Özellik" />
+                                        <DataGridTextColumn
+                                            Width="0.65*"
+                                            Binding="{Binding Quantity}"
+                                            Header="Miktar" />
+                                        <DataGridTextColumn
+                                            Width="0.65*"
+                                            Binding="{Binding Unit}"
+                                            Header="Birim" />
                                         <DataGridTemplateColumn Width="80" Header="">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -849,15 +995,32 @@
                                     FontSize="22"
                                     FontWeight="Bold"
                                     Text="Malzeme Kataloğu" />
-                                <TextBlock Margin="0,6,0,16" Foreground="{StaticResource TextSecondary}" Text="Ürün ekleyin, hücrelere tıklayarak bilgileri düzenleyin veya seçili ürünü silin. Değişiklikler catalog.xml dosyasına kaydedilir." TextWrapping="Wrap" />
+                                <TextBlock
+                                    Margin="0,6,0,16"
+                                    Foreground="{StaticResource TextSecondary}"
+                                    Text="Ürün ekleyin, hücrelere tıklayarak bilgileri düzenleyin veya seçili ürünü silin. Değişiklikler catalog.xml dosyasına kaydedilir."
+                                    TextWrapping="Wrap" />
                                 <WrapPanel Margin="0,0,0,14">
-                                    <Button Margin="0,0,8,0" Padding="14,8" Click="AddCatalogItem_Click" Content="+ Yeni Ürün" Style="{StaticResource PrimaryButtonStyle}" />
-                                    <Button Margin="0,0,8,0" Padding="14,8" Click="DeleteCatalogItem_Click" Content="Seçili Ürünü Sil" Style="{StaticResource SecondaryButtonStyle}" />
-                                    <Button Padding="14,8" Click="SaveCatalog_Click" Content="Kataloğu Kaydet" Style="{StaticResource PrimaryButtonStyle}" />
+                                    <Button
+                                        Margin="0,0,8,0"
+                                        Padding="14,8"
+                                        Click="AddCatalogItem_Click"
+                                        Content="+ Yeni Ürün"
+                                        Style="{StaticResource PrimaryButtonStyle}" />
+                                    <Button
+                                        Margin="0,0,8,0"
+                                        Padding="14,8"
+                                        Click="DeleteCatalogItem_Click"
+                                        Content="Seçili Ürünü Sil"
+                                        Style="{StaticResource SecondaryButtonStyle}" />
+                                    <Button
+                                        Padding="14,8"
+                                        Click="SaveCatalog_Click"
+                                        Content="Kataloğu Kaydet"
+                                        Style="{StaticResource PrimaryButtonStyle}" />
                                 </WrapPanel>
                                 <DataGrid
                                     x:Name="CatalogGrid"
-                                    PreviewMouseWheel="CatalogGrid_PreviewMouseWheel"
                                     MinHeight="300"
                                     AlternatingRowBackground="#152238"
                                     AutoGenerateColumns="False"
@@ -866,9 +1029,10 @@
                                     CanUserAddRows="False"
                                     Foreground="#E2E8F0"
                                     IsReadOnly="False"
+                                    PreviewMouseWheel="CatalogGrid_PreviewMouseWheel"
+                                    RowBackground="#111C30"
                                     SelectionMode="Single"
-                                    SelectionUnit="FullRow"
-                                    RowBackground="#111C30">
+                                    SelectionUnit="FullRow">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn
                                             Width="1*"
@@ -886,7 +1050,10 @@
                                             Width="2*"
                                             Binding="{Binding Specifications}"
                                             Header="Teknik özellikler" />
-                                        <DataGridTextColumn Width="1.5*" Binding="{Binding Description}" Header="Açıklama" />
+                                        <DataGridTextColumn
+                                            Width="1.5*"
+                                            Binding="{Binding Description}"
+                                            Header="Açıklama" />
                                         <DataGridTextColumn
                                             Width="0.7*"
                                             Binding="{Binding Unit}"
