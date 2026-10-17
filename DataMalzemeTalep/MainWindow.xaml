@@ -613,7 +613,18 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Margin="0,0,10,0">
                                         <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Model" />
-                                        <ComboBox x:Name="ProductCombo" Height="40" Background="#17243A" BorderBrush="#33445F" DisplayMemberPath="Model" Foreground="#F1F5F9" SelectionChanged="ProductCombo_SelectionChanged" />
+                                        <ComboBox x:Name="ProductCombo" Height="40" Background="#17243A" BorderBrush="#33445F" Foreground="#F1F5F9" SelectionChanged="ProductCombo_SelectionChanged">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Model}" Foreground="#F1F5F9" VerticalAlignment="Center" />
+                                                        <TextBlock Text=" (" Foreground="#94A3B8" FontSize="10" VerticalAlignment="Center" />
+                                                        <TextBlock Text="{Binding Specifications}" Foreground="#94A3B8" FontSize="10" VerticalAlignment="Center" />
+                                                        <TextBlock Text=")" Foreground="#94A3B8" FontSize="10" VerticalAlignment="Center" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
                                     </StackPanel>
                                     <StackPanel Grid.Column="3" Margin="0,0,10,0">
                                         <TextBlock Margin="0,0,0,7" Foreground="{StaticResource TextSecondary}" Text="Miktar" />
