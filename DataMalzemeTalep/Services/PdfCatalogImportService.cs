@@ -175,8 +175,8 @@ public sealed class PdfCatalogImportService
         var text = Normalize(description);
         if (ContainsAny(text, "INVERTER", "SURUCU", "VFD", "FREKANS")) return "Sürücüler ve Motor Kontrol";
         if (ContainsAny(text, "PLC", "CPU", "DIJITAL GIRIS", "ANALOG GIRIS", "HMI")) return "PLC ve Otomasyon";
-        if (ContainsAny(text, "KABLO", "TTR", "KUMANDA KABLOSU")) return "Kablolar";
-        if (ContainsAny(text, "KLEMENS", "KONTAK", "ROLE", "RÖLE", "RÖLE")) return "Röle ve Arayüz";
+        if (ContainsAny(text, "NYA", "TTR", "KABLOSU")) return "Kablolar";
+        if (ContainsAny(text, "KLEMENS", "KONTAK", "ROLE", "RÖLE")) return "Röle ve Arayüz";
         if (ContainsAny(text, "SENSOR", "SWITCH", "SWIC", "PROXIMITY", "TERMOPLASTIK MAKARALI")) return "Sensörler";
         if (ContainsAny(text, "OTOMAT", "TMŞ", "TMS", "MOTOR KORUMA", "ACIL STOP", "BUTON", "SİGORTA", "SIGORTA")) return "Elektrik Malzemeleri";
         if (ContainsAny(text, "RAKOR", "HORTUM", "PNOMAT", "PNÜMAT")) return "Pnömatik";
