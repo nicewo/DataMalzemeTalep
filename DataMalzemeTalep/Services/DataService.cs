@@ -62,7 +62,7 @@ public sealed class DataService
         sheet.PageSetup.Margins.Bottom = 0.35;
         sheet.PageSetup.Margins.Left = 0.25;
         sheet.PageSetup.Margins.Right = 0.25;
-        sheet.PageSetup.SetPrintArea("A1:F56");
+        sheet.PageSetup.PrintAreas.Add("A1:F56");
         sheet.PageSetup.PagesWide = 1;
         sheet.PageSetup.PagesTall = 0;
 
