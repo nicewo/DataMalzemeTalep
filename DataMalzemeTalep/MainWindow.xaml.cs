@@ -503,14 +503,23 @@ public partial class MainWindow : Window
         if (sender is not DataGrid grid)
             return;
 
-        var scrollViewer = FindVisualChild<ScrollViewer>(grid);
-        if (scrollViewer is null)
-            return;
-
-        if (e.Delta < 0 && scrollViewer.VerticalOffset < scrollViewer.ScrollableHeight ||
-            e.Delta > 0 && scrollViewer.VerticalOffset > 0)
+        // First scroll the DataGrid itself. When it reaches its boundary (or its
+        // rows do not overflow), forward the wheel to the page ScrollViewer.
+        var gridScrollViewer = FindVisualChild<ScrollViewer>(grid);
+        if (gridScrollViewer is not null &&
+            ((e.Delta < 0 && gridScrollViewer.VerticalOffset < gridScrollViewer.ScrollableHeight) ||
+             (e.Delta > 0 && gridScrollViewer.VerticalOffset > 0)))
         {
-            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            gridScrollViewer.ScrollToVerticalOffset(
+                gridScrollViewer.VerticalOffset - e.Delta / 3.0);
+            e.Handled = true;
+            return;
+        }
+
+        if (MainContentScrollViewer is not null)
+        {
+            MainContentScrollViewer.ScrollToVerticalOffset(
+                MainContentScrollViewer.VerticalOffset - e.Delta / 3.0);
             e.Handled = true;
         }
     }
