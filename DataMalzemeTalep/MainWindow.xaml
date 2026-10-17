@@ -480,6 +480,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition x:Name="StatsRow1" Height="Auto" />
                                 <RowDefinition x:Name="StatsRow2" Height="Auto" />
+                                <RowDefinition x:Name="StatsRow3" Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition x:Name="StatsColumn1" Width="*" />
