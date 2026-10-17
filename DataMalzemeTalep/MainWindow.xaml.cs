@@ -110,7 +110,6 @@ public partial class MainWindow : Window
             Grid.SetColumnSpan(LastCreatedCard, 1);
             Grid.SetColumnSpan(CatalogStatsCard, 1);
             TotalListsCard.Margin = new Thickness(0, 0, 8, 0);
-            LastCreatedCard.Margin = new Thickness(4, 0);
             CatalogStatsCard.Margin = new Thickness(8, 0, 0, 0);
             StatsRow1.Height = GridLength.Auto;
             StatsRow2.Height = new GridLength(0);
