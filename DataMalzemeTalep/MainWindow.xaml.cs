@@ -319,7 +319,7 @@ public partial class MainWindow : Window
             PreviousList.ItemsSource = savedRequests;
 
         if (SidebarSavedLists is not null)
-            SidebarSavedLists.ItemsSource = savedRequests.Take(8).ToList();
+            SidebarSavedLists.ItemsSource = savedRequests;
 
         if (TotalRequestsText is not null)
             TotalRequestsText.Text = files.Count.ToString();
