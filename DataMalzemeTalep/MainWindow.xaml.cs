@@ -842,11 +842,8 @@ public partial class MainWindow : Window
                     existing = _materials.FirstOrDefault(m =>
                         string.IsNullOrWhiteSpace(m.Model) &&
                         !matchedWithoutCode.Contains(m) &&
-                        SameCatalogText(m.Category, incoming.Category) &&
-                        SameCatalogText(m.Brand, incoming.Brand) &&
-                        SameCatalogText(m.Specifications, incoming.Specifications) &&
-                        SameCatalogText(m.Description, incoming.Description) &&
-                        SameCatalogText(m.Unit, incoming.Unit));
+                        !string.IsNullOrWhiteSpace(m.Description) &&
+                        SameCatalogText(m.Description, incoming.Description));
 
                     if (existing is not null)
                         matchedWithoutCode.Add(existing);
