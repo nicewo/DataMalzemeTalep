@@ -88,6 +88,77 @@
             <Setter Property="Foreground" Value="#DCE6F4" />
         </Style>
 
+
+        <!-- Dark theme for native WPF selectors and grids -->
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Background" Value="#17243A" />
+            <Setter Property="Foreground" Value="#F1F5F9" />
+            <Setter Property="BorderBrush" Value="#33445F" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        </Style>
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Background" Value="#111C30" />
+            <Setter Property="Foreground" Value="#E2E8F0" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="#263A59" />
+                    <Setter Property="Foreground" Value="#FFFFFF" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#334B70" />
+                    <Setter Property="Foreground" Value="#FFFFFF" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="#111C30" />
+            <Setter Property="Foreground" Value="#E2E8F0" />
+            <Setter Property="BorderBrush" Value="#26354D" />
+            <Setter Property="RowBackground" Value="#111C30" />
+            <Setter Property="AlternatingRowBackground" Value="#142139" />
+            <Setter Property="HorizontalGridLinesBrush" Value="#26354D" />
+            <Setter Property="VerticalGridLinesBrush" Value="#26354D" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="CanUserAddRows" Value="False" />
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Background" Value="#202B49" />
+            <Setter Property="Foreground" Value="#F1F5F9" />
+            <Setter Property="BorderBrush" Value="#33445F" />
+            <Setter Property="BorderThickness" Value="0,0,1,1" />
+            <Setter Property="Padding" Value="8,7" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#E2E8F0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="8,5" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#334B70" />
+                    <Setter Property="Foreground" Value="#FFFFFF" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Setter Property="Background" Value="#111C30" />
+            <Setter Property="Foreground" Value="#E2E8F0" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1B2940" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#263A59" />
+                    <Setter Property="Foreground" Value="#FFFFFF" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="PanelStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource PanelBackground}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrushDark}" />
