@@ -6,7 +6,6 @@
     Title="DATA OTOMASYON · Malzeme Liste"
     WindowStyle="None"
     ResizeMode="CanResize"
-    shell:WindowChrome.WindowChrome="{shell:WindowChrome CaptionHeight=42, ResizeBorderThickness=6, GlassFrameThickness=0, UseAeroCaptionButtons=False}"
     Width="1440"
     Height="900"
     MinWidth="1120"
@@ -15,6 +14,9 @@
     FontFamily="Segoe UI"
     Foreground="{StaticResource TextPrimary}"
     WindowStartupLocation="CenterScreen">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="42" ResizeBorderThickness="6" GlassFrameThickness="0" UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="42" />
@@ -259,7 +261,7 @@
         </Border>
 
         <!--  Main area  -->
-        <Grid Grid.Column="1" Background="{StaticResource AppBackground}">
+        <Grid Grid.Row="1" Grid.Column="1" Background="{StaticResource AppBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="76" />
                 <RowDefinition Height="*" />
