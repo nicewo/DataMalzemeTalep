@@ -213,7 +213,12 @@ public sealed class DataService
             {
                 sheet.Cell(rowNumber, 2).Value = item.Brand;
                 sheet.Cell(rowNumber, 3).Value = item.Model;
-                sheet.Cell(rowNumber, 4).Value = string.Join(" • ", new[] { item.Category, item.Specifications }.Where(v => !string.IsNullOrWhiteSpace(v)));
+                var description = string.Join(" • ", new[] { item.Category, item.Specifications }.Where(v => !string.IsNullOrWhiteSpace(v)));
+                sheet.Cell(rowNumber, 4).Value = description;
+                sheet.Cell(rowNumber, 4).Style.Alignment.WrapText = true;
+                // Keep the description column fixed and grow the row for wrapped text.
+                var descriptionLines = Math.Max(1, (int)Math.Ceiling(description.Length / 55.0));
+                row.Height = Math.Max(17, Math.Min(45, descriptionLines * 15));
                 sheet.Cell(rowNumber, 5).Value = item.Quantity;
                 sheet.Cell(rowNumber, 6).Value = item.Unit;
             }
@@ -228,8 +233,14 @@ public sealed class DataService
                 cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                 if (col == 1 || col == 5 || col == 6)
                     cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                if (col == 2 || col == 3)
+                    cell.Style.Alignment.WrapText = true;
             }
         }
+
+        // Auto-fit brand and model columns to their longest values, while keeping them printable.
+        sheet.Column(2).AdjustToContents(8, 40);
+        sheet.Column(3).AdjustToContents(10, 45);
 
         // Show normal Excel worksheet gridlines outside the explicitly bordered form.
         sheet.ShowGridLines = true;
