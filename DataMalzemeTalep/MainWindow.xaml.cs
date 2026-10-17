@@ -819,16 +819,38 @@ public partial class MainWindow : Window
             var updated = 0;
             var noCodeAdded = 0;
 
+            // Aynı Excel dosyası tekrar içe aktarıldığında kodsuz satırların
+            // tekrar eklenmesini önlemek için her mevcut kayıt en fazla bir kez eşleşsin.
+            var matchedWithoutCode = new HashSet<Material>();
+
             foreach (var incoming in incomingMaterials)
             {
-                // Product code (Model) is the matching key. Rows without a code are
-                // always added as new records; no speculative match is attempted.
-                var existing = string.IsNullOrWhiteSpace(incoming.Model)
-                    ? null
-                    : _materials.FirstOrDefault(m =>
+                Material? existing = null;
+
+                if (!string.IsNullOrWhiteSpace(incoming.Model))
+                {
+                    existing = _materials.FirstOrDefault(m =>
                         !string.IsNullOrWhiteSpace(m.Model) &&
                         string.Equals(NormalizeModel(m.Model), NormalizeModel(incoming.Model),
                             StringComparison.OrdinalIgnoreCase));
+                }
+                else
+                {
+                    // Ürün kodu yoksa kategori + marka + teknik özellik + açıklama + birim
+                    // üzerinden eşleştir. Böylece dışa aktarılıp hiç değiştirilmemiş
+                    // kodsuz ürünler yeniden eklenmez.
+                    existing = _materials.FirstOrDefault(m =>
+                        string.IsNullOrWhiteSpace(m.Model) &&
+                        !matchedWithoutCode.Contains(m) &&
+                        SameCatalogText(m.Category, incoming.Category) &&
+                        SameCatalogText(m.Brand, incoming.Brand) &&
+                        SameCatalogText(m.Specifications, incoming.Specifications) &&
+                        SameCatalogText(m.Description, incoming.Description) &&
+                        SameCatalogText(m.Unit, incoming.Unit));
+
+                    if (existing is not null)
+                        matchedWithoutCode.Add(existing);
+                }
 
                 if (existing is not null)
                 {
@@ -866,6 +888,18 @@ public partial class MainWindow : Window
                 "İçe aktarma hatası", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
+    private static bool SameCatalogText(string? left, string? right) =>
+        string.Equals(
+            string.Join(" ", (left ?? string.Empty).Trim().ToUpperInvariant()
+                .Replace('İ', 'I').Replace('Ş', 'S').Replace('Ğ', 'G')
+                .Replace('Ü', 'U').Replace('Ö', 'O').Replace('Ç', 'C')
+                .Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)),
+            string.Join(" ", (right ?? string.Empty).Trim().ToUpperInvariant()
+                .Replace('İ', 'I').Replace('Ş', 'S').Replace('Ğ', 'G')
+                .Replace('Ü', 'U').Replace('Ö', 'O').Replace('Ç', 'C')
+                .Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries)),
+            StringComparison.OrdinalIgnoreCase);
 
     private static string NormalizeHeader(string value) =>
         string.Join(" ", value.Trim().ToUpperInvariant().Replace('İ', 'I').Replace('Ş', 'S')
