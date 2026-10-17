@@ -729,9 +729,7 @@
                                     CanUserAddRows="False"
                                     Foreground="#E2E8F0"
                                     GridLinesVisibility="Horizontal"
-                                    IsReadOnly="False"
-                                    SelectionMode="Single"
-                                    SelectionUnit="FullRow"
+                                    IsReadOnly="True"
                                     RowBackground="#111C30">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Width="1.1*" Binding="{Binding Category}" Header="Kategori" />
@@ -819,7 +817,9 @@
                                     BorderBrush="#26354D"
                                     CanUserAddRows="False"
                                     Foreground="#E2E8F0"
-                                    IsReadOnly="True"
+                                    IsReadOnly="False"
+                                    SelectionMode="Single"
+                                    SelectionUnit="FullRow"
                                     RowBackground="#111C30">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn
@@ -838,6 +838,7 @@
                                             Width="2*"
                                             Binding="{Binding Specifications}"
                                             Header="Teknik özellikler" />
+                                        <DataGridTextColumn Width="1.5*" Binding="{Binding Description}" Header="Açıklama" />
                                         <DataGridTextColumn
                                             Width="0.7*"
                                             Binding="{Binding Unit}"
