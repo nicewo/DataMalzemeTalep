@@ -130,7 +130,7 @@ public sealed class DataService
         sheet.Range("D4:F4").Merge();
         sheet.Range("D4:F4").Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
 
-        // Merge company-information cells so long text wraps instead of overflowing.
+        // Company details occupy the full B:D area; keep the date in E:F.
         foreach (var range in new[] { "B6:D6", "B7:D7", "B8:D8", "B9:D9", "B10:D10" })
             sheet.Range(range).Merge();
 
@@ -142,17 +142,17 @@ public sealed class DataService
         foreach (var address in new[] { "B6", "B7", "B8", "B9", "B10" })
         {
             sheet.Cell(address).Style.Font.FontName = "Times New Roman";
-            sheet.Cell(address).Style.Font.FontSize = 9;
+            sheet.Cell(address).Style.Font.FontSize = 8;
             sheet.Cell(address).Style.Font.Bold = true;
             sheet.Cell(address).Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-        }
-        foreach (var address in new[] { "B6", "B7", "B8", "B9", "B10" })
+            sheet.Cell(address).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
             sheet.Cell(address).Style.Alignment.WrapText = true;
-        sheet.Row(6).Height = 22;
-        sheet.Row(7).Height = 34;
-        sheet.Row(8).Height = 19;
-        sheet.Row(9).Height = 19;
-        sheet.Row(10).Height = 25;
+        }
+        sheet.Row(6).Height = 18;
+        sheet.Row(7).Height = 30;
+        sheet.Row(8).Height = 18;
+        sheet.Row(9).Height = 18;
+        sheet.Row(10).Height = 22;
 
         sheet.Range("E9:F9").Merge();
         sheet.Cell("E9").Value = "TARİH:";
@@ -210,7 +210,8 @@ public sealed class DataService
             }
         }
 
-        sheet.ShowGridLines = false;
+        // Show normal Excel worksheet gridlines outside the explicitly bordered form.
+        sheet.ShowGridLines = true;
         workbook.SaveAs(path);
         return path;
     }
