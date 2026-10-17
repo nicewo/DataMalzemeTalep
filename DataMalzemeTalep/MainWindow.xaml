@@ -365,6 +365,7 @@
             </Border>
 
             <ScrollViewer
+                x:Name="MainContentScrollViewer"
                 Grid.Row="1"
                 HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
