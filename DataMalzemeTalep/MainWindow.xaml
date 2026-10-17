@@ -57,7 +57,7 @@
                         Height="25"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Source="/Altın Devreli Veri Otomasyonu İkonu.png" />
+                        Source="/AltinLogo.png" />
                     <TextBlock
                         Margin="9,0,0,0"
                         VerticalAlignment="Center"
@@ -129,7 +129,7 @@
                             Width="90"
                             Height="89"
                             VerticalAlignment="Center"
-                            Source="/Altın Devreli Veri Otomasyonu İkonu.png" />
+                            Source="/AltinLogo.png" />
 
                         <StackPanel Margin="11,1,0,0" VerticalAlignment="Center">
                             <TextBlock
@@ -993,7 +993,7 @@
                                     <Button
                                         Grid.Column="1"
                                         Click="SaveRequest_Click"
-                                        Content="Excel'e Kaydet"
+                                        Content="Kaydet"
                                         Style="{StaticResource PrimaryButtonStyle}" />
                                 </Grid>
                             </StackPanel>

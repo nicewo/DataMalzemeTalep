@@ -89,7 +89,7 @@ public sealed class DataService
                 throw new IOException("Bu isimde bir liste zaten var.");
         }
 
-        int rowCount = Math.Max(request.Items.Count, 35);
+        int rowCount = Math.Max(request.Items.Count, 30);
         int lastRow = 12 + rowCount;   // 44 kalemde 56 eder
 
         using var workbook = new XLWorkbook();
@@ -109,7 +109,7 @@ public sealed class DataService
 
         // Keep the original form's compact six-column proportions.
         sheet.Column("A").Width = 3.50;
-        sheet.Column("B").Width = 13;
+        sheet.Column("B").Width = 14;
         sheet.Column("C").Width = 22.14;
         sheet.Column("D").Width = 36.86;
         sheet.Column("E").Width = 6.86;
@@ -214,8 +214,7 @@ public sealed class DataService
             {
                 sheet.Cell(rowNumber, 2).Value = item.Brand;
                 sheet.Cell(rowNumber, 3).Value = item.Model;
-                var description = string.Join(" • ", new[] { item.Category, item.Specifications }.Where(v => !string.IsNullOrWhiteSpace(v)));
-                sheet.Cell(rowNumber, 4).Value = description;
+                sheet.Cell(rowNumber, 4).Value = item.Specifications;
                 sheet.Cell(rowNumber, 5).Value = item.Quantity;
                 sheet.Cell(rowNumber, 6).Value = item.Unit;
             }
