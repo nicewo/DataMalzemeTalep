@@ -359,6 +359,39 @@ public partial class MainWindow : Window
         }
     }
 
+    private void CatalogGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (sender is not DataGrid grid)
+            return;
+
+        var scrollViewer = FindVisualChild<ScrollViewer>(grid);
+        if (scrollViewer is null)
+            return;
+
+        if (e.Delta < 0 && scrollViewer.VerticalOffset < scrollViewer.ScrollableHeight ||
+            e.Delta > 0 && scrollViewer.VerticalOffset > 0)
+        {
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
+    }
+
+    private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is T target)
+                return target;
+
+            var nested = FindVisualChild<T>(child);
+            if (nested is not null)
+                return nested;
+        }
+
+        return null;
+    }
+
     private void AddCatalogItem_Click(object sender, RoutedEventArgs e)
     {
         var material = new Material
