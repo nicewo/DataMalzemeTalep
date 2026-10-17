@@ -109,6 +109,15 @@ public sealed class DataService
         sheet.Column("F").Width = 13;
 
         sheet.Range("A2:F2").Merge();
+        // Company logo in the upper-left area of the form.
+        var logoPath = Path.Combine(Root, "Altın Devreli Veri Otomasyonu İkonu.png");
+        if (File.Exists(logoPath))
+        {
+            sheet.AddPicture(logoPath)
+                .MoveTo(sheet.Cell("A1"), 8, 4)
+                .WithSize(105, 78);
+        }
+
         sheet.Cell("A2").Value = "MALZEME TALEP FORMU";
         sheet.Cell("A2").Style.Font.FontName = "Times New Roman";
         sheet.Cell("A2").Style.Font.FontSize = 18;
