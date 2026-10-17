@@ -312,20 +312,33 @@ public partial class MainWindow : Window
 
     private void RefreshRequests()
     {
-        if (PreviousList is null)
-            return;
-
         var files = _service.GetSavedRequestFiles();
-        PreviousList.ItemsSource = files.Select(path => new SavedRequest(path)).ToList();
+        var savedRequests = files.Select(path => new SavedRequest(path)).ToList();
+
+        if (PreviousList is not null)
+            PreviousList.ItemsSource = savedRequests;
+
+        if (SidebarSavedLists is not null)
+            SidebarSavedLists.ItemsSource = savedRequests.Take(8).ToList();
+
         if (TotalRequestsText is not null)
             TotalRequestsText.Text = files.Count.ToString();
     }
 
     private void PreviousList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (PreviousList.SelectedItem is not SavedRequest request)
-            return;
+        if (PreviousList.SelectedItem is SavedRequest request)
+            OpenSavedRequest(request);
+    }
 
+    private void SidebarSavedLists_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (SidebarSavedLists.SelectedItem is SavedRequest request)
+            OpenSavedRequest(request);
+    }
+
+    private void OpenSavedRequest(SavedRequest request)
+    {
         try
         {
             _items.Clear();
@@ -355,6 +368,7 @@ public partial class MainWindow : Window
     {
         public string Path { get; } = path;
         public string Name => System.IO.Path.GetFileNameWithoutExtension(Path);
-        public override string ToString() => Name + " • " + File.GetLastWriteTime(Path).ToString("dd.MM.yyyy HH:mm");
+        public string ModifiedText => File.GetLastWriteTime(Path).ToString("dd.MM.yyyy HH:mm");
+        public override string ToString() => Name + " • " + ModifiedText;
     }
 }
