@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Microsoft.Win32;
 using DataMalzemeTalep.Models;
 using DataMalzemeTalep.Services;
 
@@ -580,6 +581,85 @@ public partial class MainWindow : Window
         try { _service.SaveCatalog(_materials); }
         catch (Exception ex) { MessageBox.Show(ex.Message, "Katalog kaydedilemedi"); }
     }
+
+    private void ImportCatalogPdf_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = "Malzeme listesi PDF dosyasını seçin",
+            Filter = "PDF dosyaları (*.pdf)|*.pdf",
+            Multiselect = false,
+            CheckFileExists = true
+        };
+
+        if (dialog.ShowDialog(this) != true)
+            return;
+
+        try
+        {
+            var importer = new PdfCatalogImportService();
+            var extracted = importer.ReadMaterials(dialog.FileName);
+
+            if (extracted.Count == 0)
+            {
+                MessageBox.Show(
+                    "PDF içinde okunabilir malzeme satırı bulunamadı. PDF taranmış görüntü olabilir veya tablo biçimi desteklenmiyor. Metin seçilebilen bir PDF ile tekrar deneyin.",
+                    "PDF okunamadı", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var added = 0;
+            var updated = 0;
+
+            foreach (var incoming in extracted)
+            {
+                // A model code is the stable key. If the PDF has no model/product
+                // code, add it as a separate entry rather than guessing a match.
+                var existing = string.IsNullOrWhiteSpace(incoming.Model)
+                    ? null
+                    : _materials.FirstOrDefault(m =>
+                        !string.IsNullOrWhiteSpace(m.Model) &&
+                        string.Equals(NormalizeModel(m.Model), NormalizeModel(incoming.Model),
+                            StringComparison.OrdinalIgnoreCase));
+
+                if (existing is not null)
+                {
+                    existing.Category = incoming.Category;
+                    existing.Brand = incoming.Brand;
+                    existing.Model = incoming.Model;
+                    existing.Specifications = incoming.Specifications;
+                    existing.Description = incoming.Description;
+                    existing.Unit = incoming.Unit;
+                    updated++;
+                }
+                else
+                {
+                    _materials.Add(incoming);
+                    added++;
+                }
+            }
+
+            _service.SaveCatalog(_materials);
+            CatalogGrid.ItemsSource = null;
+            CatalogGrid.ItemsSource = _materials;
+            CatalogCountText.Text = _materials.Count.ToString();
+            RefreshCatalogSelectors();
+
+            MessageBox.Show(
+                $"PDF okundu: {Path.GetFileName(dialog.FileName)}\n\n" +
+                $"Yeni ürün: {added}\nMevcut modeli güncellenen: {updated}\n" +
+                $"Katalogdaki toplam ürün: {_materials.Count}",
+                "PDF içe aktarma tamamlandı", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("PDF içe aktarılırken hata oluştu:\n" + ex.Message,
+                "PDF içe aktarma hatası", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private static string NormalizeModel(string model) =>
+        string.Join("", model.Trim().Where(c => !char.IsWhiteSpace(c))).ToUpperInvariant();
 
     private void SaveCatalog_Click(object sender, RoutedEventArgs e)
     {
