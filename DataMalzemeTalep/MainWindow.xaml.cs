@@ -564,23 +564,48 @@ public partial class MainWindow : Window
 
     private void DeleteCatalogItem_Click(object sender, RoutedEventArgs e)
     {
-        if (CatalogGrid.SelectedItem is not Material material)
+        var selectedMaterials = CatalogGrid.SelectedItems
+            .OfType<Material>()
+            .Distinct()
+            .ToList();
+
+        if (selectedMaterials.Count == 0)
         {
-            MessageBox.Show("Önce silinecek ürünü seçin.", "Ürün seçilmedi");
+            MessageBox.Show("Silmek için bir veya daha fazla ürün seçin.\n\n" +
+                "Bir aralık seçmek için Shift, tek tek ürün seçmek veya seçimi değiştirmek için Ctrl tuşunu kullanabilirsiniz.",
+                "Ürün seçilmedi", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 
-        if (MessageBox.Show($"'{material.Brand} {material.Model}' katalogdan silinsin mi?",
-            "Ürünü Sil", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+        var preview = string.Join("\n", selectedMaterials.Take(8)
+            .Select(m => $"• {m.Brand} {m.Model}".Trim()));
+        if (selectedMaterials.Count > 8)
+            preview += $"\n… ve {selectedMaterials.Count - 8} ürün daha";
+
+        if (MessageBox.Show(
+            $"Seçili {selectedMaterials.Count} ürün katalogdan silinsin mi?\n\n{preview}",
+            "Seçili Ürünleri Sil", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
             return;
 
-        _materials.Remove(material);
+        foreach (var material in selectedMaterials)
+            _materials.Remove(material);
+
         CatalogGrid.ItemsSource = null;
         CatalogGrid.ItemsSource = _materials;
         CatalogCountText.Text = _materials.Count.ToString();
         RefreshCatalogSelectors();
-        try { _service.SaveCatalog(_materials); }
-        catch (Exception ex) { MessageBox.Show(ex.Message, "Katalog kaydedilemedi"); }
+
+        try
+        {
+            _service.SaveCatalog(_materials);
+            MessageBox.Show($"{selectedMaterials.Count} ürün silindi.", "Katalog güncellendi",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Katalog kaydedilemedi:\n" + ex.Message,
+                "Kayıt hatası", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private void ImportCatalogPdf_Click(object sender, RoutedEventArgs e)
