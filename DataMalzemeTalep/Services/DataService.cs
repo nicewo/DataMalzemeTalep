@@ -24,14 +24,46 @@ public sealed class DataService
 
     public List<Material> LoadCatalog()
     {
-        using var stream = File.OpenRead(CatalogPath);
+        var materials = ReadCatalog(CatalogPath);
+
+        // An older app version may already have created an empty catalog.xml.
+        // In that case, recover the starter materials from the bundled template.
+        if (materials.Count == 0)
+        {
+            var templatePath = Path.Combine(Root, "Data", "catalog.xml");
+            if (File.Exists(templatePath))
+            {
+                var templateMaterials = ReadCatalog(templatePath);
+                if (templateMaterials.Count > 0)
+                {
+                    WriteCatalog(CatalogPath, new MaterialCatalog { Materials = templateMaterials });
+                    materials = templateMaterials;
+                }
+            }
+        }
+
+        return materials;
+    }
+
+    private static List<Material> ReadCatalog(string path)
+    {
+        if (!File.Exists(path))
+            return [];
+
+        using var stream = File.OpenRead(path);
         return ((MaterialCatalog?)new XmlSerializer(typeof(MaterialCatalog)).Deserialize(stream))?.Materials ?? [];
     }
 
     private void CreateCatalog()
     {
-        var catalog = new MaterialCatalog();
-        using var stream = new FileStream(CatalogPath, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+        var templatePath = Path.Combine(Root, "Data", "catalog.xml");
+        var materials = ReadCatalog(templatePath);
+        WriteCatalog(CatalogPath, new MaterialCatalog { Materials = materials });
+    }
+
+    private static void WriteCatalog(string path, MaterialCatalog catalog)
+    {
+        using var stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
         new XmlSerializer(typeof(MaterialCatalog)).Serialize(stream, catalog);
     }
 
