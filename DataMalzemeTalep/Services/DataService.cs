@@ -208,39 +208,56 @@ public sealed class DataService
             var row = sheet.Row(rowNumber);
             row.Height = 17;
             var item = i < request.Items.Count ? request.Items[i] : null;
-            sheet.Cell(rowNumber, 1).Value = item is null ? i + 1 : i + 1;
+            sheet.Cell(rowNumber, 1).Value = i + 1;
+
             if (item is not null)
             {
                 sheet.Cell(rowNumber, 2).Value = item.Brand;
                 sheet.Cell(rowNumber, 3).Value = item.Model;
                 var description = string.Join(" • ", new[] { item.Category, item.Specifications }.Where(v => !string.IsNullOrWhiteSpace(v)));
                 sheet.Cell(rowNumber, 4).Value = description;
-                sheet.Cell(rowNumber, 4).Style.Alignment.WrapText = true;
-                // Keep the description column fixed and grow the row for wrapped text.
-                var descriptionLines = Math.Max(1, (int)Math.Ceiling(description.Length / 55.0));
-                row.Height = Math.Max(17, Math.Min(45, descriptionLines * 15));
                 sheet.Cell(rowNumber, 5).Value = item.Quantity;
                 sheet.Cell(rowNumber, 6).Value = item.Unit;
             }
 
+            int requiredLines = 1;
             for (int col = 1; col <= 6; col++)
             {
                 var cell = sheet.Cell(rowNumber, col);
+                cell.Style.Font.FontName = "Times New Roman";
+                cell.Style.Font.FontSize = 9;
                 cell.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
                 cell.Style.Border.RightBorder = XLBorderStyleValues.Thin;
                 cell.Style.Border.TopBorder = XLBorderStyleValues.Thin;
                 cell.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
-                cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
-                if (col == 1 || col == 5 || col == 6)
-                    cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                if (col == 2 || col == 3)
-                    cell.Style.Alignment.WrapText = true;
-            }
-        }
 
-        // Auto-fit brand and model columns to their longest values, while keeping them printable.
-        sheet.Column(2).AdjustToContents(8, 40);
-        sheet.Column(3).AdjustToContents(10, 45);
+                // All list data is aligned to the top-left as requested.
+                cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Top;
+
+                // Reduce to 9 pt first; if text still exceeds the cell width, wrap to at most 2 lines.
+                if (col == 2 || col == 3 || col == 4)
+                {
+                    var value = cell.GetString();
+                    var maxCharsPerLine = col switch
+                    {
+                        2 => 18, // Brand
+                        3 => 30, // Product code / model
+                        _ => 52  // Description
+                    };
+                    int lines = Math.Max(1, (int)Math.Ceiling(value.Length / (double)maxCharsPerLine));
+                    lines = Math.Min(2, lines);
+                    if (lines > 1)
+                    {
+                        cell.Style.Alignment.WrapText = true;
+                        requiredLines = Math.Max(requiredLines, lines);
+                    }
+                }
+            }
+
+            // Make rows tall enough for wrapped content, without changing single-line row heights.
+            row.Height = requiredLines > 1 ? 30 : 17;
+        }
 
         // Show normal Excel worksheet gridlines outside the explicitly bordered form.
         sheet.ShowGridLines = true;
