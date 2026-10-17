@@ -184,18 +184,31 @@ public partial class MainWindow : Window
         if (ProductCombo is null || CategoryCombo.SelectedItem is not string category)
             return;
 
+        var categoryMaterials = _materials.Where(m => m.Category == category).ToList();
+        BrandCombo.ItemsSource = categoryMaterials.Select(m => m.Brand).Where(v => !string.IsNullOrWhiteSpace(v)).Distinct().OrderBy(v => v).ToList();
+        BrandCombo.SelectedIndex = -1;
+        ProductCombo.ItemsSource = null;
+        ProductDescriptionText.Text = "Marka ve model seçin.";
+    }
+
+    private void BrandCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ProductCombo is null || CategoryCombo.SelectedItem is not string category ||
+            BrandCombo.SelectedItem is not string brand)
+            return;
+
         ProductCombo.ItemsSource = _materials
-            .Where(m => m.Category == category)
-            .OrderBy(m => m.Brand)
-            .ThenBy(m => m.Model)
+            .Where(m => m.Category == category && m.Brand == brand)
+            .OrderBy(m => m.Model)
             .ToList();
         ProductCombo.SelectedIndex = -1;
+        ProductDescriptionText.Text = "Model seçildiğinde açıklama ve birim burada görünür.";
     }
 
     private void ProductCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (ProductCombo.SelectedItem is Material material)
-            ProductDescriptionText.Text = $"{material.Specifications} • {material.Description}";
+            ProductDescriptionText.Text = $"Açıklama: {material.Specifications} {material.Description}    |    Birim: {material.Unit}";
     }
 
     private void AddItem_Click(object sender, RoutedEventArgs e)
