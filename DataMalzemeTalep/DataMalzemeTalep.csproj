@@ -9,6 +9,10 @@
     <ApplicationIcon>Altın-Devreli-Veri-Otomasyonu-İkonu.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Logo.png" />
+  </ItemGroup>
+
 
 
   <ItemGroup>
@@ -18,5 +22,8 @@
   <ItemGroup><Content Include="Altın-Devreli-Veri-Otomasyonu-İkonu.ico" /><Content Include="Data\catalog.xml" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
   <ItemGroup>
     <Content Include="Altın Devreli Veri Otomasyonu İkonu.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

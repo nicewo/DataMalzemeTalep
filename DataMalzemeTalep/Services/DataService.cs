@@ -1,10 +1,12 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using System.Xml.Serialization;
 using ClosedXML.Excel;
 using DataMalzemeTalep.Models;
+using DocumentFormat.OpenXml.Drawing;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Serialization;
+using Path = System.IO.Path;
 
 namespace DataMalzemeTalep.Services;
 
@@ -87,34 +89,39 @@ public sealed class DataService
                 throw new IOException("Bu isimde bir liste zaten var.");
         }
 
+        int rowCount = Math.Max(request.Items.Count, 35);
+        int lastRow = 12 + rowCount;   // 44 kalemde 56 eder
+
         using var workbook = new XLWorkbook();
         var sheet = workbook.Worksheets.Add("Sayfa1");
         sheet.Style.Font.FontName = "Calibri";
+        sheet.Style.Font.Bold = true;
         sheet.PageSetup.PaperSize = (XLPaperSize)9;
         sheet.PageSetup.PageOrientation = XLPageOrientation.Portrait;
         sheet.PageSetup.Margins.Top = 0.35;
         sheet.PageSetup.Margins.Bottom = 0.35;
         sheet.PageSetup.Margins.Left = 0.25;
         sheet.PageSetup.Margins.Right = 0.25;
-        sheet.PageSetup.PrintAreas.Add("A1:F56");
+        sheet.PageSetup.PrintAreas.Clear();
+        sheet.PageSetup.PrintAreas.Add($"A1:F{lastRow}");
         sheet.PageSetup.PagesWide = 1;
         sheet.PageSetup.PagesTall = 0;
 
         // Keep the original form's compact six-column proportions.
-        sheet.Column("A").Width = 7;
-        sheet.Column("B").Width = 17;
-        sheet.Column("C").Width = 23;
-        sheet.Column("D").Width = 34;
-        sheet.Column("E").Width = 12;
-        sheet.Column("F").Width = 13;
+        sheet.Column("A").Width = 3.50;
+        sheet.Column("B").Width = 13;
+        sheet.Column("C").Width = 22.14;
+        sheet.Column("D").Width = 36.86;
+        sheet.Column("E").Width = 6.86;
+        sheet.Column("F").Width = 8;
 
         sheet.Range("A2:F2").Merge();
         // Company logo in the upper-left area of the form.
-        var logoPath = Path.Combine(Root, "Altın Devreli Veri Otomasyonu İkonu.png");
+        var logoPath = Path.Combine(Root, "Logo.png");
         if (File.Exists(logoPath))
         {
             sheet.AddPicture(logoPath)
-                .MoveTo(sheet.Cell("A1"), 8, 4)
+                .MoveTo(sheet.Cell("A2"), 5, 5)
                 .WithSize(105, 78);
         }
 
@@ -165,21 +172,26 @@ public sealed class DataService
 
         sheet.Range("E9:F9").Merge();
         sheet.Cell("E9").Value = "TARİH:";
+        sheet.Cell("E9").Style.Fill.BackgroundColor = XLColor.FromArgb(0, 0, 0);
+        sheet.Cell("E9").Style.Font.FontColor = XLColor.FromArgb(255, 255, 255);
         sheet.Cell("E9").Style.Font.Bold = true;
         sheet.Cell("E9").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         sheet.Cell("E9").Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
         sheet.Range("E10:F10").Merge();
+        sheet.Cell("E10").Style.Fill.BackgroundColor = XLColor.FromArgb(0, 0, 0);
+        sheet.Cell("E10").Style.Font.FontColor = XLColor.FromArgb(255, 255, 255);
         sheet.Cell("E10").Value = request.CreatedAt;
         sheet.Cell("E10").Style.DateFormat.Format = "dd.MM.yyyy";
         sheet.Cell("E10").Style.Font.Bold = true;
         sheet.Cell("E10").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
 
-        string[] headers = ["SIRA NO", "MARKA", "ÜRÜN KODU", "AÇIKLAMA", "MİKTAR", "BRİM"];
+        string[] headers = ["SIRA NO", "MARKA", "ÜRÜN KODU", "AÇIKLAMA", "MİKTAR", "BİRİM"];
         for (int col = 1; col <= headers.Length; col++)
         {
             var cell = sheet.Cell(12, col);
             cell.Value = headers[col - 1];
             cell.Style.Font.Bold = true;
+            cell.Style.Font.FontSize = 10;
             cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
             cell.Style.Alignment.WrapText = true;
@@ -190,7 +202,7 @@ public sealed class DataService
         }
         sheet.Row(12).Height = 27;
 
-        for (int i = 0; i < Math.Max(request.Items.Count, 44); i++)
+        for (int i = 0; i < rowCount; i++)
         {
             int rowNumber = 13 + i;
             var row = sheet.Row(rowNumber);
