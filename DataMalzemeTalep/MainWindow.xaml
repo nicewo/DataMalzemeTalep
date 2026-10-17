@@ -347,20 +347,25 @@
                             Foreground="{StaticResource TextSecondary}"
                             Text="Malzeme listelerinizi tek yerden yönetin." />
                     </StackPanel>
-                    <Button
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        Click="ExportPdf_Click"
-                        Style="{StaticResource PrimaryButtonStyle}"
-                        Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                                Margin="0,0,9,0"
-                                FontSize="16"
-                                Text="↓" />
-                            <TextBlock VerticalAlignment="Center" Text="PDF Çıkar" />
-                        </StackPanel>
-                    </Button>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button
+                            Margin="0,0,8,0"
+                            Click="ExportExcel_Click"
+                            Style="{StaticResource SecondaryButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="0,0,8,0" FontSize="16" Text="↓" />
+                                <TextBlock VerticalAlignment="Center" Text="Excel Çıkar" />
+                            </StackPanel>
+                        </Button>
+                        <Button
+                            Click="ExportPdf_Click"
+                            Style="{StaticResource PrimaryButtonStyle}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Margin="0,0,8,0" FontSize="16" Text="↓" />
+                                <TextBlock VerticalAlignment="Center" Text="PDF Çıkar" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
                 </Grid>
             </Border>
 
