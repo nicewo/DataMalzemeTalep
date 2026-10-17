@@ -334,11 +334,12 @@
                                         Margin="0,12,0,5"
                                         FontSize="27"
                                         FontWeight="SemiBold"
-                                        Text="—" />
+                                        x:Name="TotalRequestsText"
+                                        Text="0" />
                                     <TextBlock
                                         FontSize="11"
                                         Foreground="#7F91AA"
-                                        Text="Kayıtlar tarandığında gösterilecek"
+                                        Text="Kaydedilmiş Excel talepleri"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
                             </Border>
@@ -378,11 +379,12 @@
                                         Margin="0,12,0,5"
                                         FontSize="27"
                                         FontWeight="SemiBold"
-                                        Text="XML" />
+                                        x:Name="CatalogCountText"
+                                        Text="0" />
                                     <TextBlock
                                         FontSize="11"
                                         Foreground="#7F91AA"
-                                        Text="Merkezi katalog dosyası"
+                                        Text="Katalogdaki malzeme sayısı"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
                             </Border>
