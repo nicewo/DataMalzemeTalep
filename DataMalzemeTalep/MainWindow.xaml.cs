@@ -966,9 +966,112 @@ public partial class MainWindow : Window
         ProductDescriptionText.Text = "Marka ve model seçin.";
     }
 
+    private string? ChooseCurrentListPath()
+    {
+        if (string.IsNullOrWhiteSpace(_currentListPath) || !File.Exists(_currentListPath))
+        {
+            MessageBox.Show(this, "Önce bir liste oluşturun veya kayıtlı listelerden birini açın.", "Liste seçilmedi");
+            return null;
+        }
+
+        SaveCurrentListSilently();
+        return _currentListPath;
+    }
+
+    private void ExportExcel_Click(object sender, RoutedEventArgs e)
+    {
+        var sourcePath = ChooseCurrentListPath();
+        if (sourcePath is null)
+            return;
+
+        var dialog = new Microsoft.Win32.OpenFolderDialog
+        {
+            Title = "Excel dosyasının kopyalanacağı klasörü seçin",
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog(this) != true)
+            return;
+
+        try
+        {
+            var destination = Path.Combine(dialog.FolderName, Path.GetFileName(sourcePath));
+            if (string.Equals(Path.GetFullPath(sourcePath), Path.GetFullPath(destination), StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show(this, "Seçilen klasör zaten listenin bulunduğu klasör.", "Excel Çıkar");
+                return;
+            }
+
+            File.Copy(sourcePath, destination, true);
+            StatusText.Text = "Excel dosyası kopyalandı: " + destination;
+            MessageBox.Show(this, $"Excel dosyası kopyalandı:\n{destination}", "Excel Çıkar");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, "Excel dosyası kopyalanamadı:\n" + ex.Message, "Excel Çıkar");
+        }
+    }
+
     private void ExportPdf_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show("PDF çıktısı henüz uygulanmadı.", "PDF Çıkar");
+        var sourcePath = ChooseCurrentListPath();
+        if (sourcePath is null)
+            return;
+
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            Title = "PDF olarak kaydet",
+            Filter = "PDF dosyası (*.pdf)|*.pdf",
+            FileName = Path.GetFileNameWithoutExtension(sourcePath) + ".pdf",
+            DefaultExt = ".pdf",
+            AddExtension = true,
+            OverwritePrompt = true
+        };
+
+        if (dialog.ShowDialog(this) != true)
+            return;
+
+        object? excelApp = null;
+        object? workbooks = null;
+        object? workbook = null;
+        try
+        {
+            // Use Microsoft Excel's own PDF export so pagination and print layout
+            // match opening the workbook and choosing Print / Save as PDF.
+            var excelType = Type.GetTypeFromProgID("Excel.Application");
+            if (excelType is null)
+                throw new InvalidOperationException("Microsoft Excel bulunamadı. PDF dışa aktarma için bilgisayarda Excel kurulu olmalı.");
+
+            excelApp = Activator.CreateInstance(excelType)
+                ?? throw new InvalidOperationException("Excel başlatılamadı.");
+            excelApp.GetType().InvokeMember("Visible", System.Reflection.BindingFlags.SetProperty, null, excelApp, new object[] { false });
+            excelApp.GetType().InvokeMember("DisplayAlerts", System.Reflection.BindingFlags.SetProperty, null, excelApp, new object[] { false });
+
+            workbooks = excelApp.GetType().InvokeMember("Workbooks", System.Reflection.BindingFlags.GetProperty, null, excelApp, null);
+            workbook = workbooks!.GetType().InvokeMember("Open", System.Reflection.BindingFlags.InvokeMethod, null, workbooks, new object[] { sourcePath });
+            workbook!.GetType().InvokeMember("ExportAsFixedFormat", System.Reflection.BindingFlags.InvokeMethod, null, workbook,
+                new object[] { 0, dialog.FileName });
+
+            workbook.GetType().InvokeMember("Close", System.Reflection.BindingFlags.InvokeMethod, null, workbook, new object[] { false });
+            excelApp.GetType().InvokeMember("Quit", System.Reflection.BindingFlags.InvokeMethod, null, excelApp, null);
+            StatusText.Text = "PDF oluşturuldu: " + dialog.FileName;
+            MessageBox.Show(this, $"PDF oluşturuldu:\n{dialog.FileName}", "PDF Çıkar");
+        }
+        catch (Exception ex)
+        {
+            try { workbook?.GetType().InvokeMember("Close", System.Reflection.BindingFlags.InvokeMethod, null, workbook, new object[] { false }); } catch { }
+            try { excelApp?.GetType().InvokeMember("Quit", System.Reflection.BindingFlags.InvokeMethod, null, excelApp, null); } catch { }
+            MessageBox.Show(this, "PDF oluşturulamadı:\n" + ex.Message, "PDF Çıkar");
+        }
+        finally
+        {
+            if (workbook is not null && System.Runtime.InteropServices.Marshal.IsComObject(workbook))
+                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(workbook);
+            if (workbooks is not null && System.Runtime.InteropServices.Marshal.IsComObject(workbooks))
+                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(workbooks);
+            if (excelApp is not null && System.Runtime.InteropServices.Marshal.IsComObject(excelApp))
+                System.Runtime.InteropServices.Marshal.FinalReleaseComObject(excelApp);
+        }
     }
 
     private sealed class SavedRequest(string path)
