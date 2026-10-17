@@ -228,23 +228,23 @@
                         </Grid>
                     </StackPanel>
 
-                    <!-- Placeholder pages, wired to navigation -->
                     <StackPanel x:Name="NewRequestPanel" Visibility="Collapsed">
-                        <Border Style="{StaticResource PanelStyle}" Padding="26">
-                            <StackPanel>
-                                <TextBlock Text="Yeni malzeme talebi" FontSize="22" FontWeight="Bold"/>
-                                <TextBlock Text="Talep oluşturma alanını bir sonraki adımda burada kuracağız." FontSize="13" Foreground="{StaticResource TextSecondary}" Margin="0,8,0,22"/>
-                                <Border Background="#17243A" BorderBrush="#2B3B54" BorderThickness="1" CornerRadius="10" Padding="22">
-                                    <StackPanel HorizontalAlignment="Center" Margin="0,20">
-                                        <TextBlock Text="＋" FontSize="34" Foreground="#A5B4FC" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="Yeni liste için hazır" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
-                                        <TextBlock Text="Kategori, ürün seçimi ve miktar alanları burada yer alacak." FontSize="12" Foreground="{StaticResource TextSecondary}" TextAlignment="Center" Margin="0,7,0,0"/>
-                                    </StackPanel>
-                                </Border>
-                            </StackPanel>
-                        </Border>
+                        <TextBlock Text="Yeni malzeme listesi" FontSize="23" FontWeight="Bold"/>
+                        <TextBlock Text="Katalogdan ürün seçin, miktarı belirleyin ve listeye ekleyin." FontSize="12" Foreground="{StaticResource TextSecondary}" Margin="0,6,0,20"/>
+                        <Border Style="{StaticResource PanelStyle}" Padding="22" Margin="0,0,0,18"><StackPanel>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="1.2*"/><ColumnDefinition Width="2*"/><ColumnDefinition Width="0.7*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,12,0"><TextBlock Text="Kategori" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,7"/><ComboBox x:Name="CategoryCombo" Height="40" SelectionChanged="CategoryCombo_SelectionChanged" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,12,0"><TextBlock Text="Malzeme / ürün" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,7"/><ComboBox x:Name="ProductCombo" Height="40" SelectionChanged="ProductCombo_SelectionChanged" DisplayMemberPath="DisplayName" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></StackPanel>
+                            <StackPanel Grid.Column="2" Margin="0,0,12,0"><TextBlock Text="Miktar" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,7"/><TextBox x:Name="QuantityTextBox" Text="1" Height="40" Padding="8" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></StackPanel>
+                            <Button Grid.Column="3" Style="{StaticResource PrimaryButtonStyle}" Click="AddItem_Click" Content="＋ Listeye Ekle" VerticalAlignment="Bottom" Height="40"/>
+                            </Grid><TextBlock x:Name="ProductDescriptionText" Text="Ürün seçildiğinde teknik açıklama burada görünür." Foreground="{StaticResource TextSecondary}" Margin="0,12,0,0"/>
+                        </StackPanel></Border>
+                        <Border Style="{StaticResource PanelStyle}" Padding="22"><StackPanel>
+                            <Grid Margin="0,0,0,16"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Talep listesi" FontSize="16" FontWeight="SemiBold"/><TextBlock x:Name="RequestCountText" Text="Henüz ürün eklenmedi" Foreground="{StaticResource TextSecondary}" Margin="0,5,0,0"/></StackPanel><TextBox x:Name="RequestNameTextBox" Grid.Column="1" Width="230" Height="36" Text="Malzeme Talebi" Padding="8" Background="#17243A" Foreground="#F1F5F9" BorderBrush="#33445F"/></Grid>
+                            <DataGrid x:Name="RequestGrid" MinHeight="240" MaxHeight="420" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" Background="#111C30" Foreground="#E2E8F0" BorderBrush="#26354D" RowBackground="#111C30" AlternatingRowBackground="#152238" GridLinesVisibility="Horizontal"><DataGrid.Columns><DataGridTextColumn Header="Kategori" Binding="{Binding Category}" Width="1*"/><DataGridTextColumn Header="Marka / Model" Binding="{Binding DisplayName}" Width="1.8*"/><DataGridTextColumn Header="Teknik özellikler" Binding="{Binding Specifications}" Width="2*"/><DataGridTextColumn Header="Miktar" Binding="{Binding Quantity}" Width="0.7*"/><DataGridTextColumn Header="Birim" Binding="{Binding Unit}" Width="0.7*"/><DataGridTemplateColumn Header="" Width="80"><DataGridTemplateColumn.CellTemplate><DataTemplate><Button Content="Kaldır" Tag="{Binding}" Click="RemoveItem_Click" Background="#42212D" Foreground="#FCA5A5" BorderThickness="0" Padding="7,4"/></DataTemplate></DataGridTemplateColumn.CellTemplate></DataGridTemplateColumn></DataGrid.Columns></DataGrid>
+                            <Grid Margin="0,18,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock x:Name="StatusText" Text="Liste henüz kaydedilmedi." Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center"/><Button Grid.Column="1" Style="{StaticResource PrimaryButtonStyle}" Click="SaveRequest_Click" Content="Excel'e Kaydet"/></Grid>
+                        </StackPanel></Border>
                     </StackPanel>
-
                     <StackPanel x:Name="PreviousPanel" Visibility="Collapsed">
                         <Border Style="{StaticResource PanelStyle}" Padding="26">
                             <TextBlock Text="Kayıtlı talepler alanı sonraki adımda eklenecek." FontSize="14" Foreground="{StaticResource TextSecondary}"/>
