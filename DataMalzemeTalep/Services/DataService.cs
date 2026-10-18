@@ -144,7 +144,7 @@ public sealed class DataService
         sheet.Cell("D4").Style.Font.FontColor = XLColor.Red;
         sheet.Cell("D4").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         sheet.Range("D4:F4").Merge();
-        sheet.Range("D4:F4").Style.Border.OutsideBorder = XLBorderStyleValues.Hair;
+        sheet.Range("D4:F4").Style.Border.BottomBorder = XLBorderStyleValues.Thin;
 
         // Company details occupy the full B:D area; keep the date in E:F.
         foreach (var range in new[] { "B6:D6", "B7:D7", "B8:D8", "B9:D9", "B10:D10" })
@@ -195,10 +195,11 @@ public sealed class DataService
             cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
             cell.Style.Alignment.WrapText = true;
-            cell.Style.Border.TopBorder = XLBorderStyleValues.Medium;
-            cell.Style.Border.BottomBorder = XLBorderStyleValues.Medium;
-            cell.Style.Border.LeftBorder = XLBorderStyleValues.Hair;
-            cell.Style.Border.RightBorder = XLBorderStyleValues.Hair;
+            cell.Style.Fill.BackgroundColor = XLColor.FromArgb(200, 200, 200);
+            cell.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+            cell.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
+            cell.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+            cell.Style.Border.RightBorder = XLBorderStyleValues.Thin;
         }
         sheet.Row(12).Height = 27;
 
@@ -225,10 +226,10 @@ public sealed class DataService
                 var cell = sheet.Cell(rowNumber, col);
                 cell.Style.Font.FontName = "Times New Roman";
                 cell.Style.Font.FontSize = 9;
-                cell.Style.Border.LeftBorder = XLBorderStyleValues.Hair;
-                cell.Style.Border.RightBorder = XLBorderStyleValues.Hair;
-                cell.Style.Border.TopBorder = XLBorderStyleValues.Hair;
-                cell.Style.Border.BottomBorder = XLBorderStyleValues.Hair;
+                cell.Style.Border.LeftBorder = XLBorderStyleValues.Thin;
+                cell.Style.Border.RightBorder = XLBorderStyleValues.Thin;
+                cell.Style.Border.TopBorder = XLBorderStyleValues.Thin;
+                cell.Style.Border.BottomBorder = XLBorderStyleValues.Thin;
 
                 // All list data is aligned to the top-left as requested.
                 cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;

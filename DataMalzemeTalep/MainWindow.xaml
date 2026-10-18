@@ -347,21 +347,28 @@
                             Foreground="{StaticResource TextSecondary}"
                             Text="Malzeme listelerinizi tek yerden yönetin." />
                     </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <StackPanel
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
                         <Button
                             Margin="0,0,8,0"
                             Click="ExportExcel_Click"
                             Style="{StaticResource SecondaryButtonStyle}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0,0,8,0" FontSize="16" Text="↓" />
+                                <TextBlock
+                                    Margin="0,0,8,0"
+                                    FontSize="16"
+                                    Text="↓" />
                                 <TextBlock VerticalAlignment="Center" Text="Excel Çıkar" />
                             </StackPanel>
                         </Button>
-                        <Button
-                            Click="ExportPdf_Click"
-                            Style="{StaticResource PrimaryButtonStyle}">
+                        <Button Click="ExportPdf_Click" Style="{StaticResource PrimaryButtonStyle}">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="0,0,8,0" FontSize="16" Text="↓" />
+                                <TextBlock
+                                    Margin="0,0,8,0"
+                                    FontSize="16"
+                                    Text="↓" />
                                 <TextBlock VerticalAlignment="Center" Text="PDF Çıkar" />
                             </StackPanel>
                         </Button>
@@ -772,29 +779,9 @@
                                     Foreground="{StaticResource TextSecondary}"
                                     Text="Değişiklikler açık olan Excel listesine kaydedilir." />
                             </StackPanel>
-                            <Button
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                Click="ExportPdf_Click"
-                                Style="{StaticResource PrimaryButtonStyle}">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock
-                                        Margin="0,0,9,0"
-                                        FontSize="16"
-                                        Text="↓" />
-                                    <TextBlock VerticalAlignment="Center" Text="PDF Çıkar" />
-                                </StackPanel>
-                            </Button>
+
                         </Grid>
-                        <TextBlock
-                            FontSize="23"
-                            FontWeight="Bold"
-                            Text="Yeni malzeme listesi" />
-                        <TextBlock
-                            Margin="0,6,0,20"
-                            FontSize="12"
-                            Foreground="{StaticResource TextSecondary}"
-                            Text="Katalogdan ürün seçin, miktarı belirleyin ve listeye ekleyin." />
+
                         <Border
                             Margin="0,0,0,18"
                             Padding="22"
