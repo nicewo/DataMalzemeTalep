@@ -7,6 +7,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Altın-Devreli-Veri-Otomasyonu-İkonu.ico</ApplicationIcon>
+
+    <!-- Windows x64 için bağımsız, tek dosyalı yayın -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,21 +20,31 @@
     <None Remove="Logo.png" />
   </ItemGroup>
 
-
-
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
     <PackageReference Include="PdfPig" Version="0.1.16" />
   </ItemGroup>
-  <ItemGroup><Content Include="Altın-Devreli-Veri-Otomasyonu-İkonu.ico" /><Content Include="Data\catalog.xml" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Altın-Devreli-Veri-Otomasyonu-İkonu.ico" />
+    <Content Include="Data\catalog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- Logo çalışma anında dosya yoluyla okunduğu için EXE dışında kalır. -->
   <ItemGroup>
     <Content Include="Logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
     <Resource Include="AltinLogo.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+
 </Project>
